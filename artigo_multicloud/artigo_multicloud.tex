@@ -1,0 +1,172 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{indentfirst}
+\usepackage{setspace}
+% \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
+
+\sloppy
+
+\title{Multi-Cloud}
+
+\author{Alexandre Canalle\inst{1}, Ariel Frozza\inst{1}}
+
+\address{Instituto de Informática -- Universidade Católica do Paraná (PUC-PR)\\
+	Caixa Postal 15.064 -- 91.501-970 -- Curitiba -- PR -- Brazil
+	\email{arielfrozza@gmail.com, roxsnd@gmail.com}
+}
+
+\begin{document}
+
+%\setlength{\parindent}{1.5cm}  % altera a indentação de paragrafo
+%\setlength{\parskip}{1.5cm} % altera espaço entre paragrafos
+
+\singlespacing
+
+\maketitle
+	
+\begin{abstract}
+	This meta-paper describes the style to be used in articles and short papers
+	for SBC conferences. For papers in English, you should add just an abstract
+	while for the papers in Portuguese, we also ask for an abstract in
+	Portuguese (``resumo''). In both cases, abstracts should not have more than
+	10 lines and must be in the first page of the paper.
+\end{abstract}
+
+\begin{abstract} 
+	Este meta-artigo descreve o estilo a ser usado na confecção de artigos e
+	resumos de artigos para publicação nos anais das conferências organizadas
+	pela SBC. É solicitada a escrita de resumo e abstract apenas para os artigos
+	escritos em português. Artigos em inglês deverão apresentar apenas abstract.
+	Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
+	não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
+	página do artigo.
+\end{abstract}
+
+	\section{Introdução}
+		Muitas organizações estão migrando para a Nuvem e procuram fazer esta migração de forma segura, confiável e sem "vendor lock in". A maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41]. Além disso, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios [].
+		
+		Performance variável também é um problema por que a maioria dos provedores "overprovision" sua infraestrutura virtualizada e isto rezulta em degradação de performance e qualidade de serviço [42].
+		
+		Este artigo vai focar em frameworks e patterns que ofereçem Softwares e APIs não proprietárias com as funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Cloud
+		
+		Este estudo intenciona responder às seguintes questões:
+		
+		Como desenhamos "Deployment Patterns" em ambiente multi-cloud que ofereçam:
+		
+		1) Tolerancia à falhas (faul-tolerance) envolvendo uso de mais de um provedor de Cloud.
+		
+		2) Neutralidade de fornecedor (vendor neutrality), ability/possibility to run on major Cloud providers IaaS using open-source solutions to avoid "lock-in".
+		
+		3) Performance como abilidade para alterar/ajustar cargas para outros provedores de Cloud em caso de degradação de performance ou qualidade de serviço em um ou mais provedores.
+		
+		4) Segurança
+		
+		5) Eficiencia de custos como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
+		
+		Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
+		
+		Custos de de operação em um determinado provedor Cloud variam assm como os custos de trocar de provedor podem ficar muito altos caso tudo (o padrão em questão) tenha que ser refeito/revisto inteiramente. Usando padrões "vendor neutral" o objetivo seria ser capaz de mudar de provedor de cloud de acordo com a conveniencia ou executar on-premises sem ter que alterar o software stack.
+		
+		Outro beneficio importante deste esstud é a enfase em padrões "fault tolerant" que implica na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
+		
+		Por fim, este estudo (as soluções definidas/proostas) garante que os padrões funcionam também em cloud privadas, pois:
+		
+		1) Custos de longo prazo para cloud publica podem ficar mais altos que on-premises devido ao OPEX da clou publica eventualmente ultrapassa o CAPEX da cloud privada quando servidores e outros equipamentos são comprados.
+		
+		2) Por causa de segurança ou motivos regulatórios, pode ser necessário manter parte do workload on-premises.
+		
+		3) Performance on-premises pode ser melhor por ue você controla a taxa de over-subscrição e cargas submetidas a uma mesma instância de virtualização.
+		
+		Neste artigo vamos identificar e categorizar os principais desafios para atingir o objetivo principal. Em seguida, vamos identificar os atributos principais de qualidade desejados para o deploy dos padrões em Cloud. Depois, proporemos soluções de padrão de qualidade para cada padrão apresentado. 
+		
+		Todos os padrões serão unificados em um framework Multi-Cloud coeso.
+		
+		Por fim, validaremos oos padrões chaves com experimentos para a "feasibility" dos casos de "fault-tolerance" e "self-healing" usando padrões open-source de implementação.
+		
+		O resultado deste estudo será um catálogo de Padrões de Cloud "Fault Tolerant", Seguro e de alta performance com as soluções mapeadas com software open-source com exemplos do deploy (e alguns templates/pseudo-codigo) que podem ser usados para implementar um stack completo de infraestrutura que será compativel com a especificação OASIS CAMP (Cloud Application Management for Platforms) e mais tarde, com OASIS TOSCA (Topology and Orchestration Specification for Cloud Applications).
+		
+		Em seguida, todos os padrões serão validados usando software Open Source. A maioria das ofertas em cloud não seria possível sem uso de software open source (e.g. hypervisors Xen e KVM). Como selecionamos os melhores projetos open-source? We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
+		
+		\hspace{3cm}Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
+		Current solutions and their limitations.
+		Problem statement.
+		Solution methodology.
+		Expected contributions.
+		Assumptions and objectives for supporting open-source multi-cloud deployment.
+		Key challenges while deploying enterprise computing in Multi-Cloud Environment.
+		Open-source Multi-Cloud deployment solution framework.
+		Solution to major multi-cloud challenges.
+		
+	\section{Design Patterns and Frameworks for Effective Multi-Cloud Deployment}
+	
+	\subsection{Multi-Cloud Foundation Patterns focused on Fault Tolerant Deployment Solutions}	
+
+	\subsubsection{Initial Multi-Cloud General Deplyment Fault Tolerance Challenges}
+	
+	\subsubsection{Multi-Cloud Management after initial deployment and Dealing with Failures}
+	
+	\subsubsection{Cost Efficiency Problems}
+	
+	\subsubsection{Security Problems}
+	
+	\subsubsection{Application Deployment in Multi-Cloud Environment}
+	
+	\subsection{Multi-cloud management after initial Deployment and dealing with failures in automated way}
+	
+	\subsubsection{title}
+	
+	\subsection{Cost efficiency patterns}
+
+	\subsubsection{title}
+
+	\subsection{security related patterns}
+
+    \subsubsection{title}
+	
+	\subsection{multi-cloud control plane framework}
+	
+	\section{experimental validation}
+	
+	\section{Conclusion}
+		
+	Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
+	\noindent Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
+   
+    conteúdo da sub-subseção
+	% isso é um comentário
+	Meu primeiro doc tex. À é ã ç \%
+	
+	\textbf{Texto negrito}. - Seleciona e CTRL + b
+	
+	\textit{Text itálico}. - Seleciona e ctrl + i
+	
+	\textbf{\textit{Text negrito e itálico}}
+	
+	\underline{Text undeline} 
+	
+	\begin{flushleft}
+		Texto à esquerda
+	\end{flushleft}
+	
+	\begin{center}
+		Texto centralizado.
+	\end{center}
+	
+	\begin{flushright}
+		Texto à direita.
+	\end{flushright}
+	
+	{\tiny Texto pequeno.}
+	
+	{\LARGE Texto Grande.}
+	
+	Texto Normal.
+	
+	\newpage
+	
+	\part[test]{title}
+	Bla bla bla
+\end{document}
