@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.24)  27 DEC 2018 13:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.24)  27 DEC 2018 14:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -552,26 +552,26 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13> not available
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [2]
-[3] (./artigo_multicloud.aux) ) 
+[3] (./artigo_multicloud.bbl) [4] (./artigo_multicloud.aux) ) 
 Here is how much of TeX's memory you used:
- 4289 strings out of 492990
- 59361 string characters out of 6135004
+ 4298 strings out of 492990
+ 59471 string characters out of 6135004
  138113 words of memory out of 5000000
- 7811 multiletter control sequences out of 15000+600000
+ 7817 multiletter control sequences out of 15000+600000
  18188 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,8n,40p,1022b,312s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/b
-ase/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
--dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
-tmri8a.pfb>
-Output written on artigo_multicloud.pdf (3 pages, 79139 bytes).
+ 43i,8n,40p,1029b,312s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texliv
+e/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on artigo_multicloud.pdf (4 pages, 79527 bytes).
 PDF statistics:
- 39 PDF objects out of 1000 (max. 8388607)
- 27 compressed objects within 1 object stream
+ 42 PDF objects out of 1000 (max. 8388607)
+ 29 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
