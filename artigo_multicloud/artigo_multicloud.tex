@@ -6,6 +6,7 @@
 \usepackage{indentfirst}
 \usepackage{setspace}
 % \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
+\usepackage{xcolor} % modfica cores no texto
 
 \sloppy
 
@@ -46,31 +47,25 @@
 \end{abstract}
 
 	\section{Introdução}
-		Muitas organizações estão migrando para a Nuvem e procuram fazer esta migração de forma segura, confiável e sem "vendor lock in". A maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41]. Além disso, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios [].
+		As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionado à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios [], além disso,  performance variável também é um problema por que a maioria dos provedores "overprovision" sua infraestrutura virtualizada e isto rezulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
 		
-		Performance variável também é um problema por que a maioria dos provedores "overprovision" sua infraestrutura virtualizada e isto rezulta em degradação de performance e qualidade de serviço [42].
+		Este artigo aborda frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam softwares e APIs não proprietárias mas que disponibilizam funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Nuvem para que o provisionamento/orquestração/uso de vários provedores de Núvens diferentes seja possível.
 		
-		Este artigo vai focar em frameworks e patterns que ofereçem Softwares e APIs não proprietárias com as funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Cloud
+		Este estudo descreve como podemos desenhar padrões de provisionamento em ambiente \textit{multi-cloud} que ofereçam:
 		
-		Este estudo intenciona responder às seguintes questões:
+		1) \textbf{Tolerancia à falhas} (faul-tolerance) por envolver uso de mais de um provedor de Nuvem simultaneamente.
 		
-		Como desenhamos "Deployment Patterns" em ambiente multi-cloud que ofereçam:
+		2) \textbf{Neutralidade de fornecedor} como sendo a possibilidade de implementar IaaS nos principais proveodres de Nuvens usando soluções open-source para evitar o \textit{vendor lock-in}.
 		
-		1) Tolerancia à falhas (faul-tolerance) envolvendo uso de mais de um provedor de Cloud.
+		3) \textbf{Performance} como abilidade para alterar/ajustar cargas para outros provedores de Cloud em caso de degradação de performance ou qualidade de serviço em um ou mais provedores.
 		
-		2) Neutralidade de fornecedor (vendor neutrality), ability/possibility to run on major Cloud providers IaaS using open-source solutions to avoid "lock-in".
+		4) \textbf{Segurança}
 		
-		3) Performance como abilidade para alterar/ajustar cargas para outros provedores de Cloud em caso de degradação de performance ou qualidade de serviço em um ou mais provedores.
+		5) \textbf{Eficiencia de custos} como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
 		
-		4) Segurança
+		Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços \textcolor{red}{( … e.g. AWS spot instance e nos últimos 2 anos o custo por hora do EC2 baixou cerca de 30\%)} assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
 		
-		5) Eficiencia de custos como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
-		
-		Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
-		
-		Custos de de operação em um determinado provedor Cloud variam assm como os custos de trocar de provedor podem ficar muito altos caso tudo (o padrão em questão) tenha que ser refeito/revisto inteiramente. Usando padrões "vendor neutral" o objetivo seria ser capaz de mudar de provedor de cloud de acordo com a conveniencia ou executar on-premises sem ter que alterar o software stack.
-		
-		Outro beneficio importante deste esstud é a enfase em padrões "fault tolerant" que implica na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
+		Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
 		
 		Por fim, este estudo (as soluções definidas/proostas) garante que os padrões funcionam também em cloud privadas, pois:
 		
@@ -86,19 +81,20 @@
 		
 		Por fim, validaremos oos padrões chaves com experimentos para a "feasibility" dos casos de "fault-tolerance" e "self-healing" usando padrões open-source de implementação.
 		
+		Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
 		O resultado deste estudo será um catálogo de Padrões de Cloud "Fault Tolerant", Seguro e de alta performance com as soluções mapeadas com software open-source com exemplos do deploy (e alguns templates/pseudo-codigo) que podem ser usados para implementar um stack completo de infraestrutura que será compativel com a especificação OASIS CAMP (Cloud Application Management for Platforms) e mais tarde, com OASIS TOSCA (Topology and Orchestration Specification for Cloud Applications).
 		
 		Em seguida, todos os padrões serão validados usando software Open Source. A maioria das ofertas em cloud não seria possível sem uso de software open source (e.g. hypervisors Xen e KVM). Como selecionamos os melhores projetos open-source? We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
 		
-		\hspace{3cm}Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
-		Current solutions and their limitations.
-		Problem statement.
-		Solution methodology.
-		Expected contributions.
-		Assumptions and objectives for supporting open-source multi-cloud deployment.
-		Key challenges while deploying enterprise computing in Multi-Cloud Environment.
-		Open-source Multi-Cloud deployment solution framework.
-		Solution to major multi-cloud challenges.
+		% \hspace{3cm}Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
+		%Current solutions and their limitations.
+		%Problem statement.
+		%Solution methodology.
+		%Expected contributions.
+		%Assumptions and objectives for supporting open-source multi-cloud deployment.
+		%Key challenges while deploying enterprise computing in Multi-Cloud Environment.
+		%Open-source Multi-Cloud deployment solution framework.
+		%Solution to major multi-cloud challenges.
 		
 	\section{Design Patterns and Frameworks for Effective Multi-Cloud Deployment}
 	
@@ -134,39 +130,45 @@
 		
 	Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
 	\noindent Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
-   
-    conteúdo da sub-subseção
+    
+    \section*{Referências}
+     
 	% isso é um comentário
-	Meu primeiro doc tex. À é ã ç \%
+	%Meu primeiro doc tex. À é ã ç \%
 	
-	\textbf{Texto negrito}. - Seleciona e CTRL + b
+	% \textbf{Texto negrito}. - Seleciona e CTRL + b
 	
-	\textit{Text itálico}. - Seleciona e ctrl + i
+	% \textit{Text itálico}. - Seleciona e ctrl + i
 	
-	\textbf{\textit{Text negrito e itálico}}
+	% \textbf{\textit{Text negrito e itálico}}
 	
-	\underline{Text undeline} 
+	% \underline{Text undeline} 
 	
-	\begin{flushleft}
-		Texto à esquerda
-	\end{flushleft}
+	% \begin{flushleft}
+	%	Texto à esquerda
+	% \end{flushleft}
 	
-	\begin{center}
-		Texto centralizado.
-	\end{center}
+	% \begin{center}
+	%	Texto centralizado.
+	% \end{center}
 	
-	\begin{flushright}
-		Texto à direita.
-	\end{flushright}
+	% \begin{flushright}
+	%	Texto à direita.
+	% \end{flushright}
 	
-	{\tiny Texto pequeno.}
+	% {\tiny Texto pequeno.}
 	
-	{\LARGE Texto Grande.}
+	% {\LARGE Texto Grande.}
 	
-	Texto Normal.
+	% Texto Normal.
 	
-	\newpage
+	% \newpage
 	
-	\part[test]{title}
-	Bla bla bla
+	% \part[test]{title}
+	% Bla bla bla
+	
+	% \colorbox{gray}{\textcolor{green}{fundo em cinza com texto verde}}
+	% \pagecolor{blue}
+	
+	
 \end{document}
