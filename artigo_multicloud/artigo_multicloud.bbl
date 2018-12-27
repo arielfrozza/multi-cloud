@@ -1,11 +1,11 @@
 \begin{thebibliography}{1}
 
-\bibitem{02}
-M.~Ann.
-\newblock Testing bibliography again.
-
-\bibitem{01}
+\bibitem{1}
 J.~Doe.
 \newblock Testing bibliography.
+
+\bibitem{2}
+M.~Zann.
+\newblock Testing bibliography again.
 
 \end{thebibliography}

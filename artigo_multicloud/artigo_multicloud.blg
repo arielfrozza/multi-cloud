@@ -3,13 +3,13 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: artigo_multicloud.aux
 The style file: abbrv.bst
 Database file #1: artigo_multicloud.bib.bib
-Warning--empty journal in 02
-Warning--empty year in 02
-Warning--empty journal in 01
-Warning--empty year in 01
+Warning--empty journal in 1
+Warning--empty year in 1
+Warning--empty journal in 2
+Warning--empty year in 2
 You've used 2 entries,
             2118 wiz_defined-function locations,
-            503 strings with 3812 characters,
+            501 strings with 3809 characters,
 and the built_in function-call counts, 418 in all, are:
 = -- 34
 > -- 14
