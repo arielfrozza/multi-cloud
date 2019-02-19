@@ -131,13 +131,28 @@
 	
 	A [Figura 1] ilustra as atividades e processos envolvidos para atingir os objetivos descritos acima. Outros benefícios, tais como Tolerância à Falhas, Segurança, Validação experimental, etc, também podem ser alcançados usando este mesmo padrão ou após serem feitas pequenas modificações, os quais não serão diretamente abordados neste artigo, mas podem ser entendidos de forma mais completa em [3 a fisher].
 	
+	1- \textbf{Multi-cloud Telemetry}: coleta e agrega dados de capacidade das Clouds integrantes da Multi-cloud. Na Figura estao representadas uma Cloud Privada e outra Publica, mas poderiamos expandir essa mesma arquitetura para um conjunto maior de diferentes provedores. As informações coletadas são repassadas para o \textbf{"SLA Enforcer Rules Engine"}, que valida a condição para a migração de recursos de uma Cloud Para outra, como exemplo, se a capacidade de uma das clouds chegar a 80\%, faz-se deploy de novos recursos apenas na outra Cloud. O \textbf{"SLA Enforcer Rules Engine"} pode avaliar um conjunto de condições que se faça adequado para cada negócio ou situação, por exemplo ele pode avaliar condições de custo ou tempo de resposta, além da capacidade. A avaliação deste processo dispara o gatilho para iniciar as novas implementações através do \textbf{"multi Cloud Deployer/orquestrator"}. Além disso, o \textbf{"Multi-cloud Telemetry + Log Aggregator"}, também gera subsídio para a bilhetagem através de métricas de utilização que são contabilizadas e disponibilidadas para o usuário através do processo \textbf{Multi-cloud Billing}. Também os alertas de erros são tratados e processados pelo processo \textbf{Sistema de Alertas e Notificações}.
+	
+	2 e 3- \textbf{"multi Cloud Deployer/orquestrator"}: utiliza as definições de implementações armazenadas como código em texto em controle de versão, GIT por exemplo. Estas definições de implementações são plicadas sobre as imagens selecionadas do Pipeline de Imagens binárias que podem ser VMs (em formato OVS, por exemplo) ou Containers (Docker, por exemplo).
+	
+	4- Toda informação sensível, em especial senhas ou chaves são obtidas do cofre de senhas, que por motivos de segurança e de facilidade de acesso, geralmente está on premises e não em uma das nuvens que fazem parte da Multi-cloud.   
+	
+	5- 
+	
+	6- 
+	
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.9\linewidth]{Figure1.png}
 			\caption{legenda longa}
 			\label{fig:figure1}
 		\end{figure}
+
+	O cenário descrito acima inicia em 1 - Telemetry, assim possibilitando situações automatizadas de orquestração dos recursos na Multi-cloud, entretanto, um humano também poderia iniciar esse processo, passando instruções diretamente ao box \textbf{Multi-cloud Deployer/Orquestrator}, porém, na Figura1 essa situação não é representada.  
 	
+	Os processos descritos acima e esquematizados na Figura1 podem ser bastante complexos e envolver outros subprocessos e também um conjunto diversificado de ferramentas e softwares. Como exemplo, exploremos em mais detalhes o \textbf{Pipeline de Imagens}:
+	
+	--- check location 2363
 
 	\subsubsection{Initial Multi-Cloud General Deplyment Fault Tolerance Challenges}
 	
