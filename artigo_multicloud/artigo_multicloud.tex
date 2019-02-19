@@ -43,37 +43,11 @@
 \end{abstract}
 
 	\section{Introdução}
-	    Atualmente, o uso de serviços e recursos a partir de múltiplos provedores de Cloud simultaneamente é devido pela necessidade de seus consumidores expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a navegação entre os diversos serviços ofertados e orquestração de recursos em múltiplas clouds (usando Infraestrutura como Código, por exemplo) ainda está distante da maturidade. Alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{1}, além disso, performance variável também é um problema por que a maioria dos provedores "overprovision" sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
+	    Atualmente, o uso de serviços e recursos a partir de múltiplos provedores de Cloud simultaneamente é devido pela necessidade de seus consumidores expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a navegação entre os diversos serviços ofertados e orquestração de recursos em múltiplas clouds (usando Infraestrutura como Código, por exemplo) ainda está distante da maturidade. Alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{1}, além disso, performance variável também é um problema por que a maioria dos provedores "over subscrição/overprovision" sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
 	    
 	    Este artigo pretende descrever alguns desafios do uso em multi cloud e levantar quais melhorias são necessárias aplicarmos às atuais soluções para atender as necessidades dos usuários de multiplas clouds. Primeiramente, a definição e a necessidade de Multi-clouds é discutida, em seguida, um modelo padrão de arquitetura para Multi-cloud é apresentado. Por último, algumas soluções (software) que tornam possíveis a Infraestrutura como Códio em Multi cloud são apresentados e discutidos. Por último, ilustraremos os processos, requisitos e desafios na implementação de IaaS em multi cloud usando Infre as code.
 	    
 	    Este artigo não apresenta uma abordagem inovadora, Noentanto, ele intenta apontar algumas lacunas/dificuldades a serem sanadas por desenvolvedores de Multi-cloud, em especial no que diz aos frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam softwares e APIs não proprietárias mas que disponibilizam funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Nuvem para que o provisionamento/orquestração/uso de vários provedores de Núvens diferentes seja possível.
-		
-		
-		
-		
-		
-		
-		Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
-		
-		Por fim, este estudo (as soluções definidas/proostas) garante que os padrões funcionam também em cloud privadas, pois:
-		
-		1) Custos de longo prazo para cloud publica podem ficar mais altos que on-premises devido ao OPEX da clou publica eventualmente ultrapassa o CAPEX da cloud privada quando servidores e outros equipamentos são comprados.
-		
-		2) Por causa de segurança ou motivos regulatórios, pode ser necessário manter parte do workload on-premises.
-		
-		3) Performance on-premises pode ser melhor por ue você controla a taxa de over-subscrição e cargas submetidas a uma mesma instância de virtualização.
-		
-		Neste artigo vamos identificar e categorizar os principais desafios para atingir o objetivo principal. Em seguida, vamos identificar os atributos principais de qualidade desejados para o deploy dos padrões em Cloud. Depois, proporemos soluções de padrão de qualidade para cada padrão apresentado. 
-		
-		Todos os padrões serão unificados em um framework Multi-Cloud coeso.
-		
-		Por fim, validaremos oos padrões chaves com experimentos para a "feasibility" dos casos de "fault-tolerance" e "self-healing" usando padrões open-source de implementação.
-		
-		Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
-		O resultado deste estudo será um catálogo de Padrões de Cloud "Fault Tolerant", Seguro e de alta performance com as soluções mapeadas com software open-source com exemplos do deploy (e alguns templates/pseudo-codigo) que podem ser usados para implementar um stack completo de infraestrutura que será compativel com a especificação OASIS CAMP (Cloud Application Management for Platforms) e mais tarde, com OASIS TOSCA (Topology and Orchestration Specification for Cloud Applications).
-		
-		Em seguida, todos os padrões serão validados usando software Open Source. A maioria das ofertas em cloud não seria possível sem uso de software open source (e.g. hypervisors Xen e KVM). Como selecionamos os melhores projetos open-source? We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
 		
 		% \hspace{3cm}Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
 		%Current solutions and their limitations.
@@ -85,9 +59,7 @@
 		%Open-source Multi-Cloud deployment solution framework.
 		%Solution to major multi-cloud challenges.
 		
-	\section{Design Patterns and Frameworks for Effective Multi-Cloud Deployment}
-	
-	\subsection{Multi-Cloud Foundation Patterns focused on Fault Tolerant Deployment Solutions}
+	\section{definição e a necessidade de Multi-clouds}
 	
 	Clouds podem ser usadas de forma serial, por exemplo, quando migramos de uma Cloud para outra, ou simultanea, quando usamos simultaneamente recursos de duas ou mais Clouds diferentes. O senário mais comum para o caso de uso simultâneo é a Cloud Ibrida, quando alguns serviços permanecem um uma nuvem (Privada) e outros seriços estão em uma núvem Pública.
 	
@@ -119,7 +91,7 @@
 	
 	A seguir descreveremos um framework para o uso de Multi-cloud envolvendo duas Clouds, uma Privada e outra Pública. 
 	
-	\section{Design Patterns e Framework for Effective Multi-Cloud Deployment}
+	\section{Modelo padrão de arquitetura para Multi-cloud - Design Patterns e Framework for Effective Multi-Cloud Deployment }
 	
 	A seguir vamos explorar um padrão de implementação de multi-cloud que propõem ajudar a atender dois casos comuns de uso de multi-cloud:
 	
@@ -144,7 +116,7 @@
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.9\linewidth]{figuras/Figure1.png}
-			\caption{legenda longa}
+			\caption{legenda longa figura1}
 			\label{fig:figure1}
 		\end{figure}
 
@@ -153,43 +125,26 @@
 	Os processos descritos acima e esquematizados na Figura1 podem ser bastante complexos e envolver outros subprocessos e também um conjunto diversificado de ferramentas e softwares. Como exemplo, exploremos em mais detalhes o \textbf{Pipeline de Imagens}:
 	
 	--- check location 829 e 2363
+	
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.7\linewidth]{figuras/Figure2.png}
-			\caption{legenda longa}
-			\label{fig:figure1}
+			\caption{legenda longa figura2}
+			\label{fig:figure2}
 		\end{figure}
-
-	\subsubsection{Initial Multi-Cloud General Deplyment Fault Tolerance Challenges}
 	
-	\subsubsection{Multi-Cloud Management after initial deployment and Dealing with Failures}
+	\section{experimental validation - Application Deployment in Multi-Cloud Environment}
 	
-	\subsubsection{Cost Efficiency Problems}
+	Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
 	
-	\subsubsection{Security Problems}
+	Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
+	O resultado deste estudo será um catálogo de Padrões de Cloud "Fault Tolerant", Seguro e de alta performance com as soluções mapeadas com software open-source com exemplos do deploy (e alguns templates/pseudo-codigo) que podem ser usados para implementar um stack completo de infraestrutura que será compativel com a especificação OASIS CAMP (Cloud Application Management for Platforms) e mais tarde, com OASIS TOSCA (Topology and Orchestration Specification for Cloud Applications).
 	
-	\subsubsection{Application Deployment in Multi-Cloud Environment}
-	
-	\subsection{Multi-cloud management after initial Deployment and dealing with failures in automated way}
-	
-	\subsubsection{title}
-	
-	\subsection{Cost efficiency patterns}
-
-	\subsubsection{title}
-
-	\subsection{security related patterns}
-
-    \subsubsection{title}
-	
-	\subsection{multi-cloud control plane framework}
-	
-	\section{experimental validation}
+	Em seguida, todos os padrões serão validados usando software Open Source. A maioria das ofertas em cloud não seria possível sem uso de software open source (e.g. hypervisors Xen e KVM). Como selecionamos os melhores projetos open-source? We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
 	
 	\section{Conclusion}
 		
-	Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
-	\noindent Conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção conteúdo da sub-seção.
+	Conclusão ...
     
    % \section*{Referências}
      
