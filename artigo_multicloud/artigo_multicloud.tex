@@ -1,16 +1,18 @@
 \documentclass[12pt]{article}
 
 \usepackage{sbc-template}
+\usepackage{graphicx,url}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
-\usepackage{indentfirst}
-\usepackage{setspace}
-% \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
-\usepackage{xcolor} % modfica cores no texto
-\usepackage{graphicx}
 \usepackage{float}
 
-\sloppy
+%\usepackage{indentfirst}
+%\usepackage{setspace}
+
+% \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
+\usepackage{xcolor} % modfica cores no texto
+
+
 
 \title{Multi-Cloud}
 
@@ -26,8 +28,8 @@
 %\setlength{\parindent}{1.5cm}  % altera a indentação de paragrafo
 %\setlength{\parskip}{1.5cm} % altera espaço entre paragrafos
 
-\singlespacing
-
+%\singlespacing
+\sloppy
 \maketitle
 	
 \begin{abstract}
@@ -43,13 +45,13 @@
 \end{abstract}
 
 	\section{Introdução}
-	    Atualmente, o uso de serviços e recursos a partir de múltiplos provedores de Cloud simultaneamente é devido pela necessidade de seus consumidores expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a navegação entre os diversos serviços ofertados e orquestração de recursos em múltiplas clouds (usando Infraestrutura como Código, por exemplo) ainda está distante da maturidade. Alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{1}, além disso, performance variável também é um problema por que a maioria dos provedores "over subscrição/overprovision" sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
+	    Atualmente, o uso de serviços e recursos a partir de múltiplos provedores de Cloud simultaneamente é devido pela necessidade de seus consumidores expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a navegação entre os diversos serviços ofertados e orquestração de recursos em múltiplas clouds (usando Infraestrutura como Código, por exemplo) ainda está distante da maturidade. Alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Ferrer:2012}, além disso, performance variável também é um problema por que a maioria dos provedores "over subscrição/overprovision" sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
 	    
 	    Este artigo pretende descrever alguns desafios do uso em multi cloud e levantar quais melhorias são necessárias aplicarmos às atuais soluções para atender as necessidades dos usuários de multiplas clouds. Primeiramente, a definição e a necessidade de Multi-clouds é discutida, em seguida, um modelo padrão de arquitetura para Multi-cloud é apresentado. Por último, algumas soluções (software) que tornam possíveis a Infraestrutura como Códio em Multi cloud são apresentados e discutidos. Por último, ilustraremos os processos, requisitos e desafios na implementação de IaaS em multi cloud usando Infre as code.
 	    
 	    Este artigo não apresenta uma abordagem inovadora, Noentanto, ele intenta apontar algumas lacunas/dificuldades a serem sanadas por desenvolvedores de Multi-cloud, em especial no que diz aos frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam softwares e APIs não proprietárias mas que disponibilizam funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Nuvem para que o provisionamento/orquestração/uso de vários provedores de Núvens diferentes seja possível.
 		
-		% \hspace{3cm}Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
+		%Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
 		%Current solutions and their limitations.
 		%Problem statement.
 		%Solution methodology.
@@ -145,18 +147,10 @@
 	\section{Conclusion}
 		
 	Conclusão ...
-    
-   % \section*{Referências}
-     
-	% isso é um comentário
-	%Meu primeiro doc tex. À é ã ç \%
 	
-	% \textbf{Texto negrito}. - Seleciona e CTRL + b
-	
-	% \textit{Text itálico}. - Seleciona e ctrl + i
-	
+	% \textbf{Texto negrito}. Seleciona e CTRL + b
+	% \textit{Text itálico}. Seleciona e ctrl + i
 	% \textbf{\textit{Text negrito e itálico}}
-	
 	% \underline{Text undeline} 
 	
 	% \begin{flushleft}
@@ -172,25 +166,34 @@
 	% \end{flushright}
 	
 	% {\tiny Texto pequeno.}
-	
 	% {\LARGE Texto Grande.}
-	
 	% Texto Normal.
 	
-	% \newpage
-	
 	% \part[test]{title}
-	% Bla bla bla
 	
 	% \colorbox{gray}{\textcolor{green}{fundo em cinza com texto verde}}
 	% \pagecolor{blue}
-	\nocite{2}
-	\nocite{3}
-	\nocite{4}
-	\nocite{5}
+	
+	\cite{Ferrer:2012}
+	\cite{Zann_2}
+	\cite{Bond:2015}
+	\cite{Morris:2016}
+	\cite{Fisher:2018}
+	
+	
+	\nocite{Fisher:2018}
+	%\nocite{Morris_2016}
+	\nocite{Bond:2015}
+	%\nocite{4}
+	%\nocite{5}
 	
 	\newpage
-	\bibliographystyle{abbrv}
+	%\bibliographystyle{alpha}
+	%\bibliographystyle{plain}
+	%\bibliographystyle{unsrt}
+	%\bibliographystyle{abbrv}
+	%\bibliographystyle{apalike}
+	\bibliographystyle{sbc}	
 	\bibliography{artigo_multicloud.bib}
 	
 \end{document}
