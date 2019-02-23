@@ -12,8 +12,6 @@
 % \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
 \usepackage{xcolor} % modfica cores no texto
 
-
-
 \title{Multi-Cloud}
 
 \author{Alexandre Canalle\inst{1}, Ariel Frozza\inst{1}}
@@ -45,11 +43,11 @@
 \end{abstract}
 
 	\section{Introdução}
-	    Atualmente, o uso de serviços e recursos a partir de múltiplos provedores de Cloud simultaneamente é devido pela necessidade de seus consumidores expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a navegação entre os diversos serviços ofertados e orquestração de recursos em múltiplas clouds (usando Infraestrutura como Código, por exemplo) ainda está distante da maturidade. Alguns obstáculos devem ser transpostos para que isso ocorra, já que, há riscos reais que devem ser mitigados; todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Ferrer:2012}, além disso, performance variável também é um problema por que a maioria dos provedores "over subscrição/overprovision" sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço [42]. Outro ponto importante é que a maioria dos provedores (inclusive os lideres de mercado) de Nuvem usam/disponibilizam Software e APIs proprietárias e tanbém não são aderentes à padrões de Cloud API como a Tosca [39] ou OASIS CAMP [41].
+	    Atualmente, o uso simultâneo de serviços e recursos de múltiplos provedores de Cloud é justificado pela necessidade de seus consumidores, expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a interoperabilidade entre os diversos serviços ofertados e orquestração de recursos em múltiplas Nuvens (usando Infraestrutura como Código \cite{Morris:2016}, por exemplo) ainda está distante da maturidade, já que, por exemplo, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Fisher:2018}. Também pode ser um problema a Performance Variável quando os provedores de Nuvem fazem a oversubscrição (\textit{overprovision}) da sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço \cite{CloudSpectator:2017}. Outro ponto importante é que a maioria dos provedores de Nuvem  (inclusive os líderes de mercado) disponibilizam Software e APIs proprietárias, que não são aderentes à padrões de \textit{Cloud API} como propostos por OASIS TOSCA \cite{TOSCA:2019} ou OASIS CAMP \cite{CAMP:2019}.
 	    
-	    Este artigo pretende descrever alguns desafios do uso em multi cloud e levantar quais melhorias são necessárias aplicarmos às atuais soluções para atender as necessidades dos usuários de multiplas clouds. Primeiramente, a definição e a necessidade de Multi-clouds é discutida, em seguida, um modelo padrão de arquitetura para Multi-cloud é apresentado. Por último, algumas soluções (software) que tornam possíveis a Infraestrutura como Códio em Multi cloud são apresentados e discutidos. Por último, ilustraremos os processos, requisitos e desafios na implementação de IaaS em multi cloud usando Infre as code.
+	    Este artigo pretende descrever alguns desafios do uso simultâneo de mais de um provedor de Nuvem e levantar alguns dor principais pontos de atenção na utilização das atuais soluções que buscam atender as necessidades dos usuários de múltiplas Nuvens. Primeiramente, a definição e a necessidade de um ambiente em Multi-cloud é discutida, em seguida, um modelo padrão de arquitetura para Multi-cloud é apresentado. A partir desta arquitetura de referência, algumas soluções (software) que tornam possíveis a Infraestrutura como Código em Multi-cloud são apresentados e discutidos. Por último, ilustraremos, a partir de um exemplo prático (disponível em https://github.com/arielfrozza/multi-cloud) os processos, requisitos e desafios na implementação de IaaS em Multi-cloud usando ferramentas e princípios típicos de Infraestrutura como Código.
 	    
-	    Este artigo não apresenta uma abordagem inovadora, Noentanto, ele intenta apontar algumas lacunas/dificuldades a serem sanadas por desenvolvedores de Multi-cloud, em especial no que diz aos frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam softwares e APIs não proprietárias mas que disponibilizam funcionalidades compatíveis/equivalentes com os softwares e serviços ofertados pelos principais provedores de Nuvem para que o provisionamento/orquestração/uso de vários provedores de Núvens diferentes seja possível.
+	    Este artigo não apresenta abordagem inovadora, entretanto, ele intenta apontar algumas lacunas e dificuldades a serem sanadas por desenvolvedores e usuários de ambientes em Multi-cloud. Em especial, discutiremos frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam APIs que disponibilizam funcionalidades compatíveis ou equivalentes com os softwares,  serviços e APIs ofertados pelos principais provedores de Nuvem, de modo que o provisionamento, orquestração e uso de vários provedores de Núvens diferentes seja facilitado.
 		
 		%Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
 		%Current solutions and their limitations.
@@ -61,21 +59,21 @@
 		%Open-source Multi-Cloud deployment solution framework.
 		%Solution to major multi-cloud challenges.
 		
-	\section{definição e a necessidade de Multi-clouds}
+	\section{Definição e Necessidade de Multi-clouds}
 	
-	Clouds podem ser usadas de forma serial, por exemplo, quando migramos de uma Cloud para outra, ou simultanea, quando usamos simultaneamente recursos de duas ou mais Clouds diferentes. O senário mais comum para o caso de uso simultâneo é a Cloud Ibrida, quando alguns serviços permanecem um uma nuvem (Privada) e outros seriços estão em uma núvem Pública.
+	Clouds podem ser usadas de forma serial, por exemplo, quando migramos de uma Cloud para outra, ou de forma simultânea, quando usamos recursos de duas ou mais Clouds diferentes ao mesmo tempo. O senário mais comum para o caso de uso simultâneo é a Cloud Híbrida, quando alguns serviços são disponibilizados a partir de uma Nuvem (Privada) e outros seriços estão em uma Nuvem Pública.
 	
-	Os motivos que justificam o uso de multiplas clous são inúmeros e dependem da natureza do negócio de cada usuário, mesmo assim é possível citar algumas vantagems do uso simultâneo de dois ou mais provedores de Cloud:
+	Os motivos que justificam o uso de múltiplas Nuvens são inúmeros e dependem da natureza do negócio de cada usuário, mesmo assim é possível citar algumas vantagens do uso simultâneo de dois ou mais provedores de Cloud:
 	
-	1) \textbf{Tolerancia à falhas} (faul-tolerance) por envolver uso de mais de um provedor de Nuvem simultaneamente.
+	\textbf{Tolerância à falhas} (fault-tolerance) por envolver uso de mais de um provedor de Nuvem simultaneamente, permitindo movimentações de contingência no caso de indisponibilidade de um dos provedors, por exemplo.
 	
-	2) \textbf{Neutralidade de fornecedor} como sendo a possibilidade de implementar IaaS nos principais proveodres de Nuvens usando soluções open-source para evitar o \textit{vendor lock-in}.
+	\textbf{Neutralidade de fornecedor} possibilita a implementação de IaaS e/ou PaaS nos principais proveodres de Nuvens usando soluções diversas (em especial open-source)  evitandor o aprisionamento à um fornedor (\textit{vendor lock-in}).
 	
-	3) \textbf{Performance} como abilidade para alterar/ajustar cargas para outros provedores de Cloud em caso de degradação de performance ou qualidade de serviço em um ou mais provedores.
+	\textbf{Performance} como habilidade para ajustar os níveis de carga para outros provedores de Cloud em caso de degradação de performance ou qualidade de serviço em um dos provedores.
 	
-	4) \textbf{Segurança}
+	\textbf{Segurança}
 	
-	5) \textbf{Eficiencia de custos} como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
+	\textbf{Eficiencia de custos} como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
 	
 	Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços \textcolor{red}{( … e.g. AWS spot instance e nos últimos 2 anos o custo por hora do EC2 baixou cerca de 30\%)} assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
 	
