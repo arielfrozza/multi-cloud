@@ -6,11 +6,7 @@
 \usepackage[brazil]{babel}
 \usepackage{float}
 
-\usepackage{indentfirst}
-%\usepackage{setspace}
-
-% \usepackage[a4paper, left=1cm, right=2cm, top=3cm, botton=3cm]{geometry}
-\usepackage{xcolor} % modfica cores no texto
+\usepackage{indentfirst} % SBC nao usa indentfirst, masacho melhor com identacao
 
 \title{Multi-Cloud}
 
@@ -23,10 +19,6 @@
 
 \begin{document}
 
-%\setlength{\parindent}{1.5cm}  % altera a indentação de paragrafo
-%\setlength{\parskip}{1.5cm} % altera espaço entre paragrafos
-
-%\singlespacing
 \sloppy
 \maketitle
 	
@@ -75,7 +67,7 @@
 	
 	\textbf{Eficiencia de custos} como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
 	
-	Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços \textcolor{red}{( … e.g. AWS spot instance e nos últimos 2 anos o custo por hora do EC2 baixou cerca de 30\%)} assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
+	Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços \textit{\underline{( … e.g. AWS spot instance e nos últimos 2 anos o custo por hora do EC2 baixou cerca de 30\%)}} assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
 	
 	Muitos termos são encontrados na literatura para designar o uso simultâneo de duas ou mais clouds. A citar os mais recorrentes [artigo multicloud]; Multi-cloud, Cloud-federation, Inter-cloud, Hybryd Cloud, Cloud of Clouds, Sky Computing, Aggregated Clouds, Fog Computing, Distributed Clouds, etc.
 	
@@ -109,9 +101,9 @@
 	
 	4- Toda informação sensível, em especial senhas ou chaves são obtidas do cofre de senhas, que por motivos de segurança e de facilidade de acesso, geralmente está on premises e não em uma das nuvens que fazem parte da Multi-cloud.   
 	
-	5- 
+	5- Os serviços e itens de configuração ativos são registrados no \textbf{Registro de Serviços e Inventário}, bem como o DNS é atualizado para refletir os novos registros e rotas.
 	
-	6- 
+	6- Alguns componentes do \textbf{"Cloud Deployer/orquestrator"} criam os componentes definidos nas etapas anteriores em cada uma das Nuvens especificadas usando as APIs de cada fornecedor. Como comentado na Introdução, os principais provedores de Nuvem não são aderentes à padrões de implementação de suas APIs. Os softwares usados nesta etapa do Cloud Deployer devem possuir uma camada de abstração dessas APIs diversas para que a implementação o mais transparente possível e que os códigos envolvidos possam ser reaproveitados o máximo possível, e não sejam complexos, ou difíceis de manter e documentar (alguns softwares serão apresentados e demosntrados na seção a seguir).  
 	
 		\begin{figure}[H]
 			\centering
@@ -124,7 +116,13 @@
 	
 	Os processos descritos acima e esquematizados na Figura1 podem ser bastante complexos e envolver outros subprocessos e também um conjunto diversificado de ferramentas e softwares. Como exemplo, exploremos em mais detalhes o \textbf{Pipeline de Imagens}:
 	
-	--- check location 829 e 2363
+
+	
+	O objetivo do processo da Figura2 é prover imagens binárias de servidores que estão dentro dos padrões para rodar em qualquer Cloud IaaS que fazem parte da Multi-cloud.
+	
+	Este processo de criação padronizada de imagens pode alcançar seus objetivos utilizando produtos open-source. Os referenciados na Figura2 são; \textbf{Spinnaker} (http://www.spinnaker.io) que é uma plataforma para entrega contínua (\textit{Continuous Delivery}) de \textit{releases} de software em ambiente Multi-cloud. \textbf{Packer} (https://www.packer.io) é um framework capaz de produzir multiplas imagens em formatos diferentes, apropriadas para a maioria dor provedores de Cloud (Públicas e Privadas). Packer pode ser usado com uma variedade grande de \textit{build systems}, dentre os quais destacamos o \textbf{Jenkins} (https://jenkins.io).
+	
+	\underline{--- location 829 e 2363}
 	
 		\begin{figure}[H]
 			\centering
@@ -181,17 +179,11 @@
 	% \pagecolor{blue}
 	
 	\cite{Ferrer:2012}
-	\cite{Zann_2}
 	\cite{Bond:2015}
 	\cite{Morris:2016}
 	\cite{Fisher:2018}
 	
-	
-	\nocite{Fisher:2018}
-	%\nocite{Morris_2016}
 	\nocite{Bond:2015}
-	%\nocite{4}
-	%\nocite{5}
 	
 	\newpage
 	%\bibliographystyle{alpha}
