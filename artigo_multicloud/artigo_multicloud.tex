@@ -141,10 +141,12 @@
 	
 	Infraestrutura como código – IaC (Infrastructure as Code) é o processo de gerenciamento e provisionamento de recursos de infraestrutura através de código e arquivos de configuração que descrevem o estado desejado para os recursos de infraestrutura. IaC usa definições declarativas ao invés de processos manuais ou procedurais. Como se tratam de arquivos de código, as definições podem ser armazenadas em um sistema de controle de versões, tal como o Git.
 	
-	Abordagens IaC são comumente promovidas para computação em nuvem e, às vezes, são comercializadas como infraestrutura como serviço (infrastructure as a service, IaaS). IaC suporta IaaS, mas os dois conceitos não devem ser confundidos.
+	Algumas vantagens da utilização de IaC incluem a \textbf{Eliminação de tarefas repetitivas} e possibilita \textbf{fácil replicação de implementações} quando o bloco de código pode ser executado repetidas vezes, fazendo poucas modificações (ou nenhuma em alguns casos) para criar ou modificar novos ambientes (Produção, Teste, Desenvoçvimento) ou implementar em Clouds diferentes (GCP, Azure ou AWS por exemplo). Uma vez que a infra está codificada de forma estruturada e geralmente em módulos, o código podee ser \textbf{Reaproveitado}. O fato da infraestrutura estar definida toda em código, e este estar \textbf{Versionado} em ferramentas como Git, possibilita \textbf{maior controle nas aplicações de mudança} nos ambientes possibilitando, inclusive, a \textbf{Recuperação de Desastres ou Disaster Recovery}. O versionamento do código em Git, também possibilita a simplificação da \textbf{Documentação do Código}, bem como sua \textbf{Manutenção e Suporte}. Além disso, com IaC, fica fácil utilizar-se das mesmas técnicas de \textbf{planejamento e testes automatizados} há muito utilizadas por desenvolvedores.
+	
+	
+	https://www.hpe.com/br/pt/what-is/infrastructure-as-code.html	
 	
 	https://blog.marcelocavalcante.net/blog/2018/10/22/infraestrutura-como-codigo-com-terraform/
-	https://www.hpe.com/br/pt/what-is/infrastructure-as-code.html
 	
 
 	Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
