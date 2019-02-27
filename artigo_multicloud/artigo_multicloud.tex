@@ -143,12 +143,30 @@
 	
 	Algumas vantagens da utilização de IaC incluem a \textbf{Eliminação de tarefas repetitivas} e possibilita \textbf{fácil replicação de implementações} quando o bloco de código pode ser executado repetidas vezes, fazendo poucas modificações (ou nenhuma em alguns casos) para criar ou modificar novos ambientes (Produção, Teste, Desenvoçvimento) ou implementar em Clouds diferentes (GCP, Azure ou AWS por exemplo). Uma vez que a infra está codificada de forma estruturada e geralmente em módulos, o código podee ser \textbf{Reaproveitado}. O fato da infraestrutura estar definida toda em código, e este estar \textbf{Versionado} em ferramentas como Git, possibilita \textbf{maior controle nas aplicações de mudança} nos ambientes possibilitando, inclusive, a \textbf{Recuperação de Desastres ou Disaster Recovery}. O versionamento do código em Git, também possibilita a simplificação da \textbf{Documentação do Código}, bem como sua \textbf{Manutenção e Suporte}. Além disso, com IaC, fica fácil utilizar-se das mesmas técnicas de \textbf{planejamento e testes automatizados} há muito utilizadas por desenvolvedores.
 	
+	Existem diversas ferramentas que trabalham sob o conceito de IaC, e muitas delas atuam juntas para englobar soluções mais completas, uma delas é nativa do Openstack, o Heat, esse serviço interage com a API do Openstack para criação ou modificação de Infraestrutura. Heat também consegue atuar em AWS, mas alguns recursos de Infraestrutura ainda não estão definidos no Heat e portanto ainda não podem ser usados. 
+	
+	Outras ferramentas, como Chef, Puppet, Ansible, SaltStack que são muito utilizadas para gerenciamento de configuração de servidores também podem ser usados para criação de recursos e infraestrutura em Nuvens públicas ou Privadas. Estes softwares, noentanto, dependem de módulos, bibliotecas ou outros softwares adicionais para “conversarem” com as APIs das diversas nuvens disponíveis no mercado. Nuvens com menor expressividade no mercado tendem a ter menor suporte por parte dessas ferramentas.
+	
+	Outra forma de intergir com as APIs das Nuvens é via Software Development Kit -SDK (por exemplo, a AWS utiliza boto3, em Python) e cada provedor de Cloud disponibiliza seu próprio SDK e geralmente diferem muito entre si, e o SDK de uma Cloud não pode ser usado em outra.
+	
+	Das soluções listadas acima, podemos notar algumas características que podem ser limitações para uso em produção em ambientes de Multi-cloud. As SDks da maioria dos provedores de Nuvem atende apenas as especificações de API do respectivo provedor de Cloud (bem como outras ferramentas, como o CloudFormation, que atende somente AWS) e portanto não são boas soluções para gerenciar multi-cloud com IaC, pois, não favorecem a fácil replicação de implementações, o reaproveitamento de código, bem como sua manutenção e suporte. Como descrito na Introdução, a maioria dos provedores de Cloud não oferecem APIs padronizadas, dificultando muito o desenvolvimento de ferramentas agnósticas. As ferramentas como Chef, Puppet, Ansible, SaltStack têm foco no gerenciamento de confiração de servidores e não oferecem bom suporte e escopo para criação de infra em múltiplos provedores de nuvem {Morris:2016}.
+	
+	Para gerenciar múltiplas Nuvens, é preciso que o Software possa “conversar” com as diversas APIs dos provedores de Cloud (publicas e privadas) e com suporte o mais amplo possível ao gerenciamento dos recursos das Clouds. Além disso, é importante que a solução tenha constante manutenção e atualizações (pode ser medido pela atividade e quantidade de contribuidores do GitHub) e tenha uma estrutura de suporte técnico formal (pago) para atender à necessidade (eventualmente regulatória) de algumas corporações.
+	
+	O Terraform, é uma solução específica para a criação da infraestrutura em Nuvem (dentro do modelo IaC), diferente do CloudFormation ou SDKs, o Terraform é uma solução agnóstica, permitindo-lhe criar infraestrutura em praticamente qualquer ambiente, seja ele em Cloud (Amazon AWS, Microsoft Azure, Google GCP, IBM Cloud, Digital Ocean, etc.), ambiente virtualizado, local ou em Data Centers (VMWare, Xen, Virtual Box, etc.), Docker, Kubernetes, além de recursos diversos de infraestrutura e softwares, tais como Redes (CloudFlare, DNS, DNSimple, F5 BIG-IP, Palo Alto Networks,etc.), Bancos de Dados (InfluxDB, MySQl ou PostgreSQL), dentre muitas outras coisas (ver www.terraform.io).
+	
+	Em https://github.com/arielfrozza/multi-cloud está o código que faz o deploy de uma aplicação web simples em uma máquina virtual Ubuntu 16 em duas Couds diferentes; AWS e Openstack. Esse senário tem o objetivo de representar o uso de um caso particular de Multi-cloud, que é a cloud híblida. A execução desses códigos pode ser feita mediante instalação do Terraform em host com acesso às duas nuvens, deve-se ter também as credenciais necessárias para a criação de instâncias. Os detalhes dos códigos e sua implementação não serão descritos neste artigo, mas os detalhes e passo a passo encontran-se no repositório GitHub abaixo dos diretórios openstack\_tf e aws\_tf para cada uma das duas Nuvens.
+	
+	O Terraform utiliza como input um conjunto de arquivos contendo a definição da Infraestrutura a ser criada nas duas Clouds. A arquitetura dessa validação segue o modelo apresentado na Figura1, mas não de forma integral. Nosso interesse é apenas verificar e identificar as vantagens e limitações do uso de tal solução à luz dos conceitos de IaC definidos anteriormente, para tal nos concentraremos na criação de uma VM em cada Cloud seguido de instalação de alguns softwares e deploy de um codigo HTTP RESP simples.	
+	
+	- O controle das versões de código em Git facilita muito 
+	- A sintaxe para a criação de recursos é substancialmente diferente para as duas Clouds. 
+	
+	
 	
 	https://www.hpe.com/br/pt/what-is/infrastructure-as-code.html	
-	
 	https://blog.marcelocavalcante.net/blog/2018/10/22/infraestrutura-como-codigo-com-terraform/
 	
-
 	Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
 	
 	Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
