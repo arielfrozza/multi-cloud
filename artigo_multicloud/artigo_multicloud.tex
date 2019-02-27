@@ -122,7 +122,7 @@
 	
 	Este processo de criação padronizada de imagens pode alcançar seus objetivos utilizando produtos open-source. Os referenciados na Figura2 são; \textbf{Spinnaker} (http://www.spinnaker.io) que é uma plataforma para entrega contínua (\textit{Continuous Delivery}) de \textit{releases} de software em ambiente Multi-cloud. \textbf{Packer} (https://www.packer.io) é um framework capaz de produzir multiplas imagens em formatos diferentes, apropriadas para a maioria dor provedores de Cloud (Públicas e Privadas). Packer pode ser usado com uma variedade grande de \textit{build systems}, dentre os quais destacamos o \textbf{Jenkins} (https://jenkins.io).
 	
-	\underline{--- location 829 e 2363}
+	\underline{ver 829 e 2363}
 	
 		\begin{figure}[H]
 			\centering
@@ -131,16 +131,22 @@
 			\label{fig:figure2}
 		\end{figure}
 	
-	\section{experimental validation - Application Deployment in Multi-Cloud Environment}
+	O processo ilustrado na Figura2 é iniciado a partir de um \textit{commit} no \textbf{Sistema de Controle de Versão} em alguma \textit{branch} (Master por exemplo) que é monitorada pelo \textbf{Continuous Build System (1)}. Sempre que uma alteração é feita, o Jenkins executa as rotinas \textbf{(2)} que são requisitos para que o Packer (principal software do \textbf{Image Builder}) possa gerar as imagens de acordo com os \textit{blueprints} de cada Cloud \textbf{(3)}. O Packer pode armazenar essas imagens para uso futuro em um repositório centralizado (\textit{on-premises} geralmente) ou pode também gravar cada imagem na respectiva Cloud \textbf{(4)}, essa última alternativa pode ser mais rápida na hora de criar uma instância, pois não precisa fazer a transferência (via Internet) da Imagem armazenada on-premises para a Cloud.
 	
-	Terraform Openstack:
+	\section{Validação Experimental - Application Deployment in Multi-Cloud Environment}
+	
+	Uma das maneiras de experimentar o processo de deploy de IaaS e PaaS em Multi-cloud pode ser feito através do uso de alguns softwares que automatizam a criação de recursos em Cloud. O uso das consoles WEB ou SDKs disponibolizadas pelos principais provedores de Cloud propicia maior chance de erro humano, requer que a documentação seja feita adicionalmente e não aproveita os benefícios da Infraestrutura como Código, discutida a seguir.  
+	
+	\subsection{Infraestrutura como Código com Terraform}
+	
+	Infraestrutura como código – IaC (Infrastructure as Code) é o processo de gerenciamento e provisionamento de recursos de infraestrutura através de código e arquivos de configuração que descrevem o estado desejado para os recursos de infraestrutura. IaC usa definições declarativas ao invés de processos manuais ou procedurais. Como se tratam de arquivos de código, as definições podem ser armazenadas em um sistema de controle de versões, tal como o Git.
+	
+	Abordagens IaC são comumente promovidas para computação em nuvem e, às vezes, são comercializadas como infraestrutura como serviço (infrastructure as a service, IaaS). IaC suporta IaaS, mas os dois conceitos não devem ser confundidos.
+	
+	https://blog.marcelocavalcante.net/blog/2018/10/22/infraestrutura-como-codigo-com-terraform/
+	https://www.hpe.com/br/pt/what-is/infrastructure-as-code.html
 	
 
-	
-	
-	
-	
-		
 	Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
 	
 	Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
