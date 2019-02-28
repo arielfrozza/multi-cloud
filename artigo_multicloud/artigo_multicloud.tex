@@ -6,7 +6,7 @@
 \usepackage[brazil]{babel}
 \usepackage{float}
 
-\usepackage{indentfirst} % SBC nao usa indentfirst, masacho melhor com identacao
+\usepackage{indentfirst} % SBC nao usa indentfirst, mas acho melhor com identacao
 
 \title{Multi-Cloud}
 
@@ -35,7 +35,7 @@
 \end{abstract}
 
 	\section{Introdução}
-	    Atualmente, o uso simultâneo de serviços e recursos de múltiplos provedores de Cloud é justificado pela necessidade de seus consumidores, expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}). Entretanto, a interoperabilidade entre os diversos serviços ofertados e orquestração de recursos em múltiplas Nuvens (usando Infraestrutura como Código \cite{Morris:2016}, por exemplo) ainda está distante da maturidade, já que, por exemplo, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Fisher:2018}. Também pode ser um problema a Performance Variável quando os provedores de Nuvem fazem a oversubscrição (\textit{overprovision}) da sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço \cite{CloudSpectator:2017}. Outro ponto importante é que a maioria dos provedores de Nuvem  (inclusive os líderes de mercado) disponibilizam Software e APIs proprietárias, que não são aderentes à padrões de \textit{Cloud API} como propostos por OASIS TOSCA \cite{TOSCA:2019} ou OASIS CAMP \cite{CAMP:2019}.
+	    Atualmente, o uso simultâneo de serviços e recursos de múltiplos provedores de Cloud é justificado pela necessidade de seus consumidores, expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura on-premises, buscam soluções confiáveis, seguras e, se possível, sem ficar aprisionados à fornecedores ou soluções fechadas (\textit{vendor lock in}).
 	    
 	    Este artigo pretende descrever alguns desafios do uso simultâneo de mais de um provedor de Nuvem e levantar alguns dor principais pontos de atenção na utilização das atuais soluções que buscam atender as necessidades dos usuários de múltiplas Nuvens. Primeiramente, a definição e a necessidade de um ambiente em Multi-cloud é discutida, em seguida, um modelo padrão de arquitetura para Multi-cloud é apresentado. A partir desta arquitetura de referência, algumas soluções (software) que tornam possíveis a Infraestrutura como Código em Multi-cloud são apresentados e discutidos. Por último, ilustraremos, a partir de um exemplo prático (disponível em https://github.com/arielfrozza/multi-cloud) os processos, requisitos e desafios na implementação de IaaS em Multi-cloud usando ferramentas e princípios típicos de Infraestrutura como Código.
 	    
@@ -67,70 +67,70 @@
 	
 	\textbf{Eficiencia de custos} como abilidade de aproveitar os melhores preços de recursos computacionais e serviços em um ambiente multi-cloud.
 	
-	Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços \textit{\underline{( … e.g. AWS spot instance e nos últimos 2 anos o custo por hora do EC2 baixou cerca de 30\%)}} assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
+	Os custos de operação em um determinado provedor Cloud variam em função dos requisitos de uso e da época de contratação dos serviços assim como os custos de trocar de provedor podem ficar muito altos caso a infraestrutura e/ou aplicações tenham que ser refeitos/revistos inteiramente. Por exemplo, um dos modelos de compra de VMs da Amazon, o AWS Spot Instance, oferece descontos para certos casos de uso, que podem chegar a 90\%, quando sua infraestrutura encontra-se ociosa. Outro exemplo é reflexo da redução dos custos operacionais dos provedores de Nuvem ao longo do tempo. De 2011 para 2013, ocusto por hora do AWS EC2 baixou cerca de 30\% \cite{Golden:2013}. Com o uso de padrões \textit{vendor neutral}, o objetivo seria ser capaz de mudar de provedor de cloud ou priorizar a execução on-premises de acordo com a conveniência, sem ter que alterar o software stack.
 	
-	Muitos termos são encontrados na literatura para designar o uso simultâneo de duas ou mais clouds. A citar os mais recorrentes [artigo multicloud]; Multi-cloud, Cloud-federation, Inter-cloud, Hybryd Cloud, Cloud of Clouds, Sky Computing, Aggregated Clouds, Fog Computing, Distributed Clouds, etc.
+	Muitos termos são encontrados na literatura para designar o uso simultâneo de duas ou mais clouds. A citar os mais recorrentes \cite{Ferrer:2012}; Multi-cloud, Cloud-federation, Inter-cloud, Hybryd Cloud, Cloud of Clouds, Sky Computing, Aggregated Clouds, Fog Computing, Distributed Clouds, etc.
 	
 	Sendo assim, achamos útil delimitar o conceito de Multi-cloud abordado neste artigo de outros modelos de uso combinado de Clouds.
 	
-	De acordo com [ref 6 do art multicloud], temos dois modelos de entraga de serviços em múltiplas clouds; Federated Cloud e Multi-Cloud. A diferença entre estes modelos seria o grau de colaboração entre os Provedores de Cloud e pelo mode pelo qual os usuários interagem com as Clouds. No primero modelo há o acordo de uso compartilhado dos recursos entre os Provedores de Cloud. Os usuários de uma núvem federada não ficam sabendo, na maioria dos casos, de qual dos provedores um determinado recurso está sendo consumido. No caso do Multi-cloud, o usuário está ciente e é restponsável pela alocação de recursos em um ou outro provedor e não há nuência dos provedores para uso compartilhado de recursos entre os provedores.
+	De acordo com \cite{Ferrer:2012}, temos dois modelos de entraga de serviços em múltiplas clouds; Federated Cloud e Multi-Cloud. A diferença entre estes modelos seria o grau de colaboração entre os Provedores de Cloud e pelo mode pelo qual os usuários interagem com as Clouds. No primero modelo há o acordo de uso compartilhado dos recursos entre os Provedores de Cloud. Os usuários de uma núvem federada não ficam sabendo, na maioria dos casos, de qual dos provedores um determinado recurso está sendo consumido. No caso do Multi-cloud, o usuário está ciente e é restponsável pela alocação de recursos em um ou outro provedor e não há nuência dos provedores para uso compartilhado de recursos entre os provedores.
 	
 	Sky Computing, Aggregated Clouds, Multi-tier Clouds ou Cross-Cloud são casos particulares de Federated Clouds e portanto não serão abordadas neste artigo. 
 	
+	O tipo mais comum de Multi-cloud é a Cloud-Hibrida na qual involve duas ou mais clouds, por exemplo, uma Cloud Privada e uma Pública. Comumente, esse modelo de Cloud Híblrida é usado para "Cloud Bursting" onde os recursos são espandidos para a Cloud Pública quando os recursos da Cloud privada chegam nos níveis máximos pré-definidos \cite{Ferrer:2012}. A migração de uma Cloud para outra, mesmo que apenas uma vez, é outro exemplo de uso de (one-time) Multi-cloud.
+	
 	Um dos maiores problemas é a interoperabilidade entre diferentes Cloudse a portabilidade de aplicações entre diferentes provedores.
-	
-	O tipo mais comum de Multi-cloud é a Cloud-Hibrida na qual involve duas ou mais clouds, por exemplo, uma Cloud Privada e uma Pública. Comumente [artigo multicloud], esse modelo de Cloud Híblrida é usado para "Cloud Bursting" onde os recursos são espandidos para a Cloud Pública quando os recursos da Cloud privada chegam nos níveis máximos pré-definidos. A migração de uma Cloud para outra, mesmo que apenas uma vez, é outro exemplo de uso de (one-time) Multi-cloud.
-	
+		
+	Entretanto, a interoperabilidade entre os diversos serviços ofertados e orquestração de recursos em múltiplas Nuvens (usando Infraestrutura como Código \cite{Morris:2016}, por exemplo) ainda está distante da maturidade, já que, por exemplo, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Fisher:2018}. Também pode ser um problema a Performance Variável quando os provedores de Nuvem fazem a oversubscrição (\textit{overprovision}) da sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço \cite{CloudSpectator:2017}. Outro ponto importante é que a maioria dos provedores de Nuvem  (inclusive os líderes de mercado) disponibilizam Software e APIs proprietárias, que não são aderentes à padrões de \textit{Cloud API} como propostos por OASIS TOSCA \cite{TOSCA:2019} ou OASIS CAMP \cite{CAMP:2019}.
+	 
 	A seguir descreveremos um framework para o uso de Multi-cloud envolvendo duas Clouds, uma Privada e outra Pública. 
 	
-	\section{Modelo padrão de arquitetura para Multi-cloud - Design Patterns e Framework for Effective Multi-Cloud Deployment }
+	\section{Arquitetura de Referência para Multi-nuvem}
 	
-	A seguir vamos explorar um padrão de implementação de multi-cloud que propõem ajudar a atender dois casos comuns de uso de multi-cloud:
+	A seguir exploramos um padrão de implementação de Multi-nuvem, conforme ilustrado na Figura1, que propõem ajudar a atender dois casos comuns de uso de multi-cloud:
 	
-	1) Public Cloud Busting Pattern: em algumas situações, a capacidade on premises de uma empresa podem exaurir e pode-se querer usar a capacidade em uma cloud pública para suprir uma determinada demanda.
+	\textbf{Trasnbordo para Nuvem Pública} (\textit{Busting Pattern}): em algumas situações, a capacidade on premises de uma empresa pode exaurir e pode-se querer usar a capacidade em uma cloud pública para suprir uma determinada demanda.
 	
-	2) Alta Disponibilidade: Eventualmente, um provedor de Cloud pode ficar (parcial ou totalmente) indisponível ou com degradação na qualidade dos serviços por diversos motivos, pode-se querer migrar de um provedor para outro os serviços e recursos para não impactar o usuário final. Por exemplo, em caso de falha ou manutenção do datacenter que hospeda a Cloud privada, pode-se migrar serviços para uma Cloud pública, mesmo que temporariamente.
+	\textbf{Alta Disponibilidade}: Eventualmente, um provedor de Cloud pode ficar (parcial ou totalmente) indisponível ou com degradação na qualidade dos serviços por diversos motivos, pode-se querer migrar de um provedor para outro os serviços e recursos para não impactar o usuário final. Por exemplo, em caso de falha ou manutenção do datacenter que hospeda a Cloud privada, pode-se migrar serviços para uma Cloud pública, mesmo que temporariamente.
 	   
-	3) Cost Efficiency Multi-clourd Pattrn: Em alguns casos, provedores oferecem descontos ou modificam seus preçõs em função da oferta e demanda, pode-se migrar uso de recursos e serviços de uma Cloud para outra sem que o cucuário final seja impactado.
+	\textbf{Eficiência de Custos}: Em alguns casos, provedores oferecem descontos ou modificam seus preçõs em função da oferta e demanda, pode-se migrar uso de recursos e serviços de uma Cloud para outra sem que o usuário final seja impactado.
 	
-	A [Figura 1] ilustra as atividades e processos envolvidos para atingir os objetivos descritos acima. Outros benefícios, tais como Tolerância à Falhas, Segurança, Validação experimental, etc, também podem ser alcançados usando este mesmo padrão ou após serem feitas pequenas modificações, os quais não serão diretamente abordados neste artigo, mas podem ser entendidos de forma mais completa em [3 a fisher].
+	A [Figura 1] ilustra as atividades e processos envolvidos para atingir os objetivos descritos acima. Outros benefícios, tais como Tolerância à Falhas, Segurança, Validação experimental, etc, também podem ser alcançados usando este mesmo padrão ou após serem feitas pequenas modificações, os quais não serão diretamente abordados neste artigo, mas podem ser entendidos de forma mais completa em \cite{Fisher:2018}.
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\linewidth]{figuras/Figure1.png}
+		\caption{legenda longa figura1}
+		\label{fig:figure1}
+	\end{figure}
 	
-	1- \textbf{Multi-cloud Telemetry}: coleta e agrega dados de capacidade das Clouds integrantes da Multi-cloud. Na Figura estao representadas uma Cloud Privada e outra Publica, mas poderiamos expandir essa mesma arquitetura para um conjunto maior de diferentes provedores. As informações coletadas são repassadas para o \textbf{"SLA Enforcer Rules Engine"}, que valida a condição para a migração de recursos de uma Cloud Para outra, como exemplo, se a capacidade de uma das clouds chegar a 80\%, faz-se deploy de novos recursos apenas na outra Cloud. O \textbf{"SLA Enforcer Rules Engine"} pode avaliar um conjunto de condições que se faça adequado para cada negócio ou situação, por exemplo ele pode avaliar condições de custo ou tempo de resposta, além da capacidade. A avaliação deste processo dispara o gatilho para iniciar as novas implementações através do \textbf{"multi Cloud Deployer/orquestrator"}. Além disso, o \textbf{"Multi-cloud Telemetry + Log Aggregator"}, também gera subsídio para a bilhetagem através de métricas de utilização que são contabilizadas e disponibilidadas para o usuário através do processo \textbf{Multi-cloud Billing}. Também os alertas de erros são tratados e processados pelo processo \textbf{Sistema de Alertas e Notificações}.
+	\textbf{Multi-cloud Telemetry (1)} coleta e agrega dados de capacidade das Clouds integrantes da Multi-cloud. Na Figura estao representadas uma Cloud Privada e outra Publica, mas poderiamos expandir essa mesma arquitetura para um conjunto maior de diferentes provedores. As informações coletadas são repassadas para o \textbf{SLA Enforcer Rules Engine}, que valida a condição para a migração de recursos de uma Cloud para outra, como exemplo, se a capacidade de uma das clouds chegar a 80\%, faz-se deploy de novos recursos apenas na outra Cloud. O \textbf{SLA Enforcer Rules Engine} pode avaliar um conjunto de condições que se faça adequado para cada negócio ou situação, por exemplo ele pode avaliar condições de custo ou tempo de resposta, além da capacidade. A avaliação deste processo dispara o gatilho para iniciar as novas implementações através do \textbf{Multi-nuvem Deployer/Orquestrator"}. Além disso, o \textbf{Multi-nuvem Telemetry + Log Aggregator}, também gera subsídio para a bilhetagem através de métricas de utilização que são contabilizadas e disponibilidadas para o usuário através do processo \textbf{Multi-cloud Billing}. Também os alertas de erros são tratados e processados pelo processo \textbf{Sistema de Alertas e Notificações}.
 	
-	2 e 3- \textbf{"multi Cloud Deployer/orquestrator"}: utiliza as definições de implementações armazenadas como código em texto em controle de versão, GIT por exemplo. Estas definições de implementações são plicadas sobre as imagens selecionadas do Pipeline de Imagens binárias que podem ser VMs (em formato OVS, por exemplo) ou Containers (Docker, por exemplo).
+	\textbf{Multi-nuvem Deployer/Orquestrator (2) e (3)} utiliza as definições de implementações armazenadas como código em texto em controle de versão, Git por exemplo. Estas definições de implementações são aplicadas sobre as imagens selecionadas do \textbf{Pipeline de Imagens} binárias que podem ser VMs (em formato OVA, VMDK, VHD ou RAW por exemplo) ou Containers (Docker, por exemplo).
 	
-	4- Toda informação sensível, em especial senhas ou chaves são obtidas do cofre de senhas, que por motivos de segurança e de facilidade de acesso, geralmente está on premises e não em uma das nuvens que fazem parte da Multi-cloud.   
+	Toda informação sensível, em especial senhas ou chaves são obtidas do \textbf{Cofre de Senhas} \textbf{(4)}, que por motivos de segurança e de facilidade de acesso, geralmente está on premises e não em uma das nuvens que fazem parte da Multi-cloud.   
 	
-	5- Os serviços e itens de configuração ativos são registrados no \textbf{Registro de Serviços e Inventário}, bem como o DNS é atualizado para refletir os novos registros e rotas.
+	Os serviços e itens de configuração ativos são registrados no \textbf{Registro de Serviços e Inventário (5)}, bem como o DNS é atualizado para refletir os novos registros e rotas.
 	
-	6- Alguns componentes do \textbf{"Cloud Deployer/orquestrator"} criam os componentes definidos nas etapas anteriores em cada uma das Nuvens especificadas usando as APIs de cada fornecedor. Como comentado na Introdução, os principais provedores de Nuvem não são aderentes à padrões de implementação de suas APIs. Os softwares usados nesta etapa do Cloud Deployer devem possuir uma camada de abstração dessas APIs diversas para que a implementação o mais transparente possível e que os códigos envolvidos possam ser reaproveitados o máximo possível, e não sejam complexos, ou difíceis de manter e documentar (alguns softwares serão apresentados e demosntrados na seção a seguir).  
-	
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.9\linewidth]{figuras/Figure1.png}
-			\caption{legenda longa figura1}
-			\label{fig:figure1}
-		\end{figure}
+	Alguns componentes do \textbf{Cloud Deployer/Orquestrator (6)} criam os componentes definidos nas etapas anteriores em cada uma das Nuvens especificadas usando as APIs de cada fornecedor. Os softwares usados nesta etapa do Cloud Deployer devem possuir uma camada de abstração das diversaas APIs para que a implementação seja o mais transparente possível e que os códigos envolvidos possam ser reaproveitados e não sejam complexos, ou difíceis de manter e documentar (alguns softwares serão apresentados e demosntrados na seção a seguir).  
 
-	O cenário descrito acima inicia em 1 - Telemetry, assim possibilitando situações automatizadas de orquestração dos recursos na Multi-cloud, entretanto, um humano também poderia iniciar esse processo, passando instruções diretamente ao box \textbf{Multi-cloud Deployer/Orquestrator}, porém, na Figura1 essa situação não é representada.  
+	O cenário descrito acima inicia em \textbf{Telemetry (1)}, assim possibilitando situações automatizadas de orquestração dos recursos na Multi-cloud, entretanto, um humano também poderia iniciar esse processo, passando instruções diretamente ao processo \textbf{Multi-cloud Deployer/Orquestrator}.  
 	
-	Os processos descritos acima e esquematizados na Figura1 podem ser bastante complexos e envolver outros subprocessos e também um conjunto diversificado de ferramentas e softwares. Como exemplo, exploremos em mais detalhes o \textbf{Pipeline de Imagens}:
-	
-
-	
+	Os processos descritos acima e esquematizados na Figura1 podem ser bastante complexos e envolver outros subprocessos e também um conjunto diversificado de ferramentas e softwares. Como exemplo, exploremos em mais detalhes o \textbf{Pipeline de Imagens}.
+		
+    \begin{figure}[H]
+    	\centering
+    	\includegraphics[width=0.7\linewidth]{figuras/Figure2.png}
+    	\caption{legenda longa figura2}
+    	\label{fig:figure2}
+    \end{figure}
+    
 	O objetivo do processo da Figura2 é prover imagens binárias de servidores que estão dentro dos padrões para rodar em qualquer Cloud IaaS que fazem parte da Multi-cloud.
 	
 	Este processo de criação padronizada de imagens pode alcançar seus objetivos utilizando produtos open-source. Os referenciados na Figura2 são; \textbf{Spinnaker} (http://www.spinnaker.io) que é uma plataforma para entrega contínua (\textit{Continuous Delivery}) de \textit{releases} de software em ambiente Multi-cloud. \textbf{Packer} (https://www.packer.io) é um framework capaz de produzir multiplas imagens em formatos diferentes, apropriadas para a maioria dor provedores de Cloud (Públicas e Privadas). Packer pode ser usado com uma variedade grande de \textit{build systems}, dentre os quais destacamos o \textbf{Jenkins} (https://jenkins.io).
 	
 	\underline{ver 829 e 2363}
-	
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.7\linewidth]{figuras/Figure2.png}
-			\caption{legenda longa figura2}
-			\label{fig:figure2}
-		\end{figure}
-	
+
 	O processo ilustrado na Figura2 é iniciado a partir de um \textit{commit} no \textbf{Sistema de Controle de Versão} em alguma \textit{branch} (Master por exemplo) que é monitorada pelo \textbf{Continuous Build System (1)}. Sempre que uma alteração é feita, o Jenkins executa as rotinas \textbf{(2)} que são requisitos para que o Packer (principal software do \textbf{Image Builder}) possa gerar as imagens de acordo com os \textit{blueprints} de cada Cloud \textbf{(3)}. O Packer pode armazenar essas imagens para uso futuro em um repositório centralizado (\textit{on-premises} geralmente) ou pode também gravar cada imagem na respectiva Cloud \textbf{(4)}, essa última alternativa pode ser mais rápida na hora de criar uma instância, pois não precisa fazer a transferência (via Internet) da Imagem armazenada on-premises para a Cloud.
 	
 	\section{Validação Experimental - Application Deployment in Multi-Cloud Environment}
@@ -141,38 +141,33 @@
 	
 	Infraestrutura como código – IaC (Infrastructure as Code) é o processo de gerenciamento e provisionamento de recursos de infraestrutura através de código e arquivos de configuração que descrevem o estado desejado para os recursos de infraestrutura. IaC usa definições declarativas ao invés de processos manuais ou procedurais. Como se tratam de arquivos de código, as definições podem ser armazenadas em um sistema de controle de versões, tal como o Git.
 	
-	Algumas vantagens da utilização de IaC incluem a \textbf{Eliminação de tarefas repetitivas} e possibilita \textbf{fácil replicação de implementações} quando o bloco de código pode ser executado repetidas vezes, fazendo poucas modificações (ou nenhuma em alguns casos) para criar ou modificar novos ambientes (Produção, Teste, Desenvoçvimento) ou implementar em Clouds diferentes (GCP, Azure ou AWS por exemplo). Uma vez que a infra está codificada de forma estruturada e geralmente em módulos, o código podee ser \textbf{Reaproveitado}. O fato da infraestrutura estar definida toda em código, e este estar \textbf{Versionado} em ferramentas como Git, possibilita \textbf{maior controle nas aplicações de mudança} nos ambientes possibilitando, inclusive, a \textbf{Recuperação de Desastres ou Disaster Recovery}. O versionamento do código em Git, também possibilita a simplificação da \textbf{Documentação do Código}, bem como sua \textbf{Manutenção e Suporte}. Além disso, com IaC, fica fácil utilizar-se das mesmas técnicas de \textbf{planejamento e testes automatizados} há muito utilizadas por desenvolvedores.
+	Algumas vantagens da utilização de IaC incluem a \textbf{eliminação de tarefas repetitivas} possibilitando a  \textbf{fácil replicação de implementações} quando o bloco de código pode ser executado repetidas vezes, fazendo poucas modificações (ou nenhuma em alguns casos) para criar ou modificar recursos em diferentes ambientes (Produção, Teste, Desenvolvimento) Clouds (GCP, Azure ou AWS por exemplo). Uma vez que a infraestrutura  está codificada de forma estruturada e geralmente em módulos, o código pode ser \textbf{reaproveitado}. O fato da infraestrutura estar definida toda em código, e este estar \textbf{versionado} em ferramentas como Git, possibilita \textbf{maior controle nas aplicações de mudança} nos ambientes possibilitando, inclusive, a \textbf{recuperação de desastres}. O versionamento do código em Git, também possibilita a simplificação da \textbf{documentação do código}, bem como sua \textbf{manutenção e suporte}. Além disso, com IaC, fica fácil utilizar-se das mesmas técnicas de \textbf{planejamento e testes automatizados} há muito tempo utilizadas por desenvolvedores.
 	
-	Existem diversas ferramentas que trabalham sob o conceito de IaC, e muitas delas atuam juntas para englobar soluções mais completas, uma delas é nativa do Openstack, o Heat, esse serviço interage com a API do Openstack para criação ou modificação de Infraestrutura. Heat também consegue atuar em AWS, mas alguns recursos de Infraestrutura ainda não estão definidos no Heat e portanto ainda não podem ser usados. 
+	Existem diversas ferramentas que trabalham sob o conceito de IaC, uma delas é nativa do Openstack, o Heat, esse serviço interage com a API do Openstack para criação ou modificação de Infraestrutura. Heat também consegue atuar em AWS, mas alguns recursos de Infraestrutura ainda não estão definidos no Heat e portanto ainda não podem ser usados. 
 	
-	Outras ferramentas, como Chef, Puppet, Ansible, SaltStack que são muito utilizadas para gerenciamento de configuração de servidores também podem ser usados para criação de recursos e infraestrutura em Nuvens públicas ou Privadas. Estes softwares, noentanto, dependem de módulos, bibliotecas ou outros softwares adicionais para “conversarem” com as APIs das diversas nuvens disponíveis no mercado. Nuvens com menor expressividade no mercado tendem a ter menor suporte por parte dessas ferramentas.
+	Outras ferramentas, como Chef, Puppet, Ansible e SaltStack que são muito utilizadas para gerenciamento de configuração de servidores também podem ser usados para criação de recursos e infraestrutura em Nuvens públicas ou Privadas. Estes softwares, noentanto, dependem de módulos, bibliotecas ou outros softwares adicionais para “conversarem” com as APIs das diversas nuvens disponíveis no mercado. Nuvens com menor expressividade no mercado tendem a ter menor suporte por parte dessas ferramentas.
 	
 	Outra forma de intergir com as APIs das Nuvens é via Software Development Kit -SDK (por exemplo, a AWS utiliza boto3, em Python) e cada provedor de Cloud disponibiliza seu próprio SDK e geralmente diferem muito entre si, e o SDK de uma Cloud não pode ser usado em outra.
 	
-	Das soluções listadas acima, podemos notar algumas características que podem ser limitações para uso em produção em ambientes de Multi-cloud. As SDks da maioria dos provedores de Nuvem atende apenas as especificações de API do respectivo provedor de Cloud (bem como outras ferramentas, como o CloudFormation, que atende somente AWS) e portanto não são boas soluções para gerenciar multi-cloud com IaC, pois, não favorecem a fácil replicação de implementações, o reaproveitamento de código, bem como sua manutenção e suporte. Como descrito na Introdução, a maioria dos provedores de Cloud não oferecem APIs padronizadas, dificultando muito o desenvolvimento de ferramentas agnósticas. As ferramentas como Chef, Puppet, Ansible, SaltStack têm foco no gerenciamento de confiração de servidores e não oferecem bom suporte e escopo para criação de infra em múltiplos provedores de nuvem {Morris:2016}.
+	Das soluções listadas acima, podemos notar algumas características que podem ser limitações para uso em produção em ambientes de Multi-cloud. As SDks da maioria dos provedores de Nuvem atende apenas as especificações de API do respectivo provedor de Cloud (bem como outras ferramentas, como o CloudFormation, que atende somente AWS) e portanto não são boas soluções para gerenciar multi-cloud com IaC, pois, não favorecem a fácil replicação de implementações, o reaproveitamento de código, bem como sua manutenção e suporte. Como descrito na Introdução, a maioria dos provedores de Cloud não oferecem APIs padronizadas, dificultando muito o desenvolvimento de ferramentas agnósticas. As ferramentas como Chef, Puppet, Ansible e SaltStack têm foco no gerenciamento de confiração de servidores e não oferecem bom suporte e escopo para criação de infra em múltiplos provedores de nuvem \cite{Morris:2016}.
 	
-	Para gerenciar múltiplas Nuvens, é preciso que o Software possa “conversar” com as diversas APIs dos provedores de Cloud (publicas e privadas) e com suporte o mais amplo possível ao gerenciamento dos recursos das Clouds. Além disso, é importante que a solução tenha constante manutenção e atualizações (pode ser medido pela atividade e quantidade de contribuidores do GitHub) e tenha uma estrutura de suporte técnico formal (pago) para atender à necessidade (eventualmente regulatória) de algumas corporações.
+	Para gerenciar múltiplas Nuvens, é preciso que o Software possa interagir com as diversas APIs dos provedores de Cloud (publicas e privadas) e com suporte o mais amplo possível ao gerenciamento dos recursos das Clouds. Além disso, é importante que a solução tenha constante manutenção e atualizações (pode ser medido pela atividade e quantidade de contribuidores do GitHub) e tenha uma estrutura de suporte técnico formal (pago) para atender à necessidade (eventualmente regulatória) de algumas corporações.
 	
-	O Terraform, é uma solução específica para a criação da infraestrutura em Nuvem (dentro do modelo IaC), diferente do CloudFormation ou SDKs, o Terraform é uma solução agnóstica, permitindo-lhe criar infraestrutura em praticamente qualquer ambiente, seja ele em Cloud (Amazon AWS, Microsoft Azure, Google GCP, IBM Cloud, Digital Ocean, etc.), ambiente virtualizado, local ou em Data Centers (VMWare, Xen, Virtual Box, etc.), Docker, Kubernetes, além de recursos diversos de infraestrutura e softwares, tais como Redes (CloudFlare, DNS, DNSimple, F5 BIG-IP, Palo Alto Networks,etc.), Bancos de Dados (InfluxDB, MySQl ou PostgreSQL), dentre muitas outras coisas (ver www.terraform.io).
+	O Terraform, é uma solução específica para a criação da infraestrutura em Nuvem (dentro do modelo IaC), diferente do CloudFormation ou SDKs, o Terraform é uma solução agnóstica, permitindo-lhe criar infraestrutura em praticamente qualquer ambiente, seja ele em Cloud (Amazon AWS, Microsoft Azure, Google GCP, IBM Cloud, Digital Ocean, etc.), ambiente virtualizado, local ou em Data Centers (VMWare, Xen, Virtual Box, etc.), Docker, Kubernetes, além de recursos diversos de infraestrutura e softwares, tais como Redes (F5 BIG-IP, Palo Alto Networks,etc.), Bancos de Dados (MySQl ou PostgreSQL), dentre outras (ver www.terraform.io).
 	
 	Em https://github.com/arielfrozza/multi-cloud está o código que faz o deploy de uma aplicação web simples em uma máquina virtual Ubuntu 16 em duas Couds diferentes; AWS e Openstack. Esse senário tem o objetivo de representar o uso de um caso particular de Multi-cloud, que é a cloud híblida. A execução desses códigos pode ser feita mediante instalação do Terraform em host com acesso às duas nuvens, deve-se ter também as credenciais necessárias para a criação de instâncias. Os detalhes dos códigos e sua implementação não serão descritos neste artigo, mas os detalhes e passo a passo encontran-se no repositório GitHub abaixo dos diretórios openstack\_tf e aws\_tf para cada uma das duas Nuvens.
 	
 	O Terraform utiliza como input um conjunto de arquivos contendo a definição da Infraestrutura a ser criada nas duas Clouds. A arquitetura dessa validação segue o modelo apresentado na Figura1, mas não de forma integral. Nosso interesse é apenas verificar e identificar as vantagens e limitações do uso de tal solução à luz dos conceitos de IaC definidos anteriormente, para tal nos concentraremos na criação de uma VM em cada Cloud seguido de instalação de alguns softwares e deploy de um codigo HTTP RESP simples.	
 	
-	- O controle das versões de código em Git facilita muito 
-	- A sintaxe para a criação de recursos é substancialmente diferente para as duas Clouds. 
+	- O controle das versões de código em Git facilita muito
 	
+	- A sintaxe para a criação de recursos é substancialmente diferente para as duas Clouds, o que dificulta o controle e reuso de código.
+	 
+	----
+		
+	Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
 	
-	
-	https://www.hpe.com/br/pt/what-is/infrastructure-as-code.html	
-	https://blog.marcelocavalcante.net/blog/2018/10/22/infraestrutura-como-codigo-com-terraform/
-	
-	Outro benefício importante deste esstud é a enfase em padrões "fault tolerant" que implicam na garantia que sistemas atinjam uptime e resiliencia à stress e falhas adequadas. 
-	
-	Implementação Open-source da plataforma com padrão neutro (vendor-neutral) será desenvolvida/apresentada para validar padrões e guias de adoção. Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
-	O resultado deste estudo será um catálogo de Padrões de Cloud "Fault Tolerant", Seguro e de alta performance com as soluções mapeadas com software open-source com exemplos do deploy (e alguns templates/pseudo-codigo) que podem ser usados para implementar um stack completo de infraestrutura que será compativel com a especificação OASIS CAMP (Cloud Application Management for Platforms) e mais tarde, com OASIS TOSCA (Topology and Orchestration Specification for Cloud Applications).
-	
-	Em seguida, todos os padrões serão validados usando software Open Source. A maioria das ofertas em cloud não seria possível sem uso de software open source (e.g. hypervisors Xen e KVM). Como selecionamos os melhores projetos open-source? We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
+	We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
 	
 	\section{Conclusion}
 		
@@ -203,11 +198,6 @@
 	
 	% \colorbox{gray}{\textcolor{green}{fundo em cinza com texto verde}}
 	% \pagecolor{blue}
-	
-	\cite{Ferrer:2012}
-	\cite{Bond:2015}
-	\cite{Morris:2016}
-	\cite{Fisher:2018}
 	
 	\nocite{Bond:2015}
 	
