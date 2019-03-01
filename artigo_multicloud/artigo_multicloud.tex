@@ -41,16 +41,6 @@
 	    
 	    Este artigo não apresenta abordagem inovadora, entretanto, ele intenta apontar algumas lacunas e dificuldades a serem sanadas por desenvolvedores e usuários de ambientes em Multi-cloud. Em especial, discutiremos frameworks e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam APIs que disponibilizam funcionalidades compatíveis ou equivalentes com os softwares,  serviços e APIs ofertados pelos principais provedores de Nuvem, de modo que o provisionamento, orquestração e uso de vários provedores de Núvens diferentes seja facilitado.
 		
-		%Multi-Cloud deployment for fault-torerance, performance, security and cost efficiency.
-		%Current solutions and their limitations.
-		%Problem statement.
-		%Solution methodology.
-		%Expected contributions.
-		%Assumptions and objectives for supporting open-source multi-cloud deployment.
-		%Key challenges while deploying enterprise computing in Multi-Cloud Environment.
-		%Open-source Multi-Cloud deployment solution framework.
-		%Solution to major multi-cloud challenges.
-		
 	\section{Definição e Necessidade de Multi-clouds}
 	
 	Clouds podem ser usadas de forma serial, por exemplo, quando migramos de uma Cloud para outra, ou de forma simultânea, quando usamos recursos de duas ou mais Clouds diferentes ao mesmo tempo. O senário mais comum para o caso de uso simultâneo é a Cloud Híbrida, quando alguns serviços são disponibilizados a partir de uma Nuvem (Privada) e outros seriços estão em uma Nuvem Pública.
@@ -80,7 +70,7 @@
 	O tipo mais comum de Multi-cloud é a Cloud-Hibrida na qual involve duas ou mais clouds, por exemplo, uma Cloud Privada e uma Pública. Comumente, esse modelo de Cloud Híblrida é usado para "Cloud Bursting" onde os recursos são espandidos para a Cloud Pública quando os recursos da Cloud privada chegam nos níveis máximos pré-definidos \cite{Ferrer:2012}. A migração de uma Cloud para outra, mesmo que apenas uma vez, é outro exemplo de uso de (one-time) Multi-cloud.
 	
 	Um dos maiores problemas é a interoperabilidade entre diferentes Cloudse a portabilidade de aplicações entre diferentes provedores.
-		
+	
 	Entretanto, a interoperabilidade entre os diversos serviços ofertados e orquestração de recursos em múltiplas Nuvens (usando Infraestrutura como Código \cite{Morris:2016}, por exemplo) ainda está distante da maturidade, já que, por exemplo, todos os provedores de Cloud experimentam, eventualmente, períodos de indisponibilidade que podem causar impactos a negócios \cite{Fisher:2018}. Também pode ser um problema a Performance Variável quando os provedores de Nuvem fazem a oversubscrição (\textit{overprovision}) da sua infraestrutura virtualizada e isto resulta em degradação de performance e qualidade de serviço \cite{CloudSpectator:2017}. Outro ponto importante é que a maioria dos provedores de Nuvem  (inclusive os líderes de mercado) disponibilizam Software e APIs proprietárias, que não são aderentes à padrões de \textit{Cloud API} como propostos por OASIS TOSCA \cite{TOSCA:2019} ou OASIS CAMP \cite{CAMP:2019}.
 	 
 	A seguir descreveremos um framework para o uso de Multi-cloud envolvendo duas Clouds, uma Privada e outra Pública. 
@@ -153,25 +143,46 @@
 	
 	Para gerenciar múltiplas Nuvens, é preciso que o Software possa interagir com as diversas APIs dos provedores de Cloud (publicas e privadas) e com suporte o mais amplo possível ao gerenciamento dos recursos das Clouds. Além disso, é importante que a solução tenha constante manutenção e atualizações (pode ser medido pela atividade e quantidade de contribuidores do GitHub) e tenha uma estrutura de suporte técnico formal (pago) para atender à necessidade (eventualmente regulatória) de algumas corporações.
 	
-	O Terraform, é uma solução específica para a criação da infraestrutura em Nuvem (dentro do modelo IaC), diferente do CloudFormation ou SDKs, o Terraform é uma solução agnóstica, permitindo-lhe criar infraestrutura em praticamente qualquer ambiente, seja ele em Cloud (Amazon AWS, Microsoft Azure, Google GCP, IBM Cloud, Digital Ocean, etc.), ambiente virtualizado, local ou em Data Centers (VMWare, Xen, Virtual Box, etc.), Docker, Kubernetes, além de recursos diversos de infraestrutura e softwares, tais como Redes (F5 BIG-IP, Palo Alto Networks,etc.), Bancos de Dados (MySQl ou PostgreSQL), dentre outras (ver www.terraform.io).
+	\subsection{validação Experimental com Terraform}
 	
-	Em https://github.com/arielfrozza/multi-cloud está o código que faz o deploy de uma aplicação web simples em uma máquina virtual Ubuntu 16 em duas Couds diferentes; AWS e Openstack. Esse senário tem o objetivo de representar o uso de um caso particular de Multi-cloud, que é a cloud híblida. A execução desses códigos pode ser feita mediante instalação do Terraform em host com acesso às duas nuvens, deve-se ter também as credenciais necessárias para a criação de instâncias. Os detalhes dos códigos e sua implementação não serão descritos neste artigo, mas os detalhes e passo a passo encontran-se no repositório GitHub abaixo dos diretórios openstack\_tf e aws\_tf para cada uma das duas Nuvens.
+	O Terraform, é uma solução open-source específica para a criação da infraestrutura em Nuvem (dentro do modelo IaC), diferente do CloudFormation ou SDKs, o Terraform é uma solução agnóstica, permitindo-lhe criar infraestrutura em praticamente qualquer ambiente, seja ele em Cloud (Amazon AWS, Microsoft Azure, Google GCP, IBM Cloud, Digital Ocean, etc.), ambiente virtualizado, local ou em Data Centers (VMWare, Xen, Virtual Box, etc.), Docker, Kubernetes, além de recursos diversos de infraestrutura e softwares, tais como Redes (F5 BIG-IP, Palo Alto Networks,etc.), Bancos de Dados (MySQl ou PostgreSQL), dentre outras (ver www.terraform.io). Terraform conta com uma sólida e ativa comunidade de contribuidores (https://github.com/hashicorp/terraform) e a Hashicorp, empresa que criou o Terraform, oferece suporte, consultorias e treinamento com foco no mercado corporativo.
 	
-	O Terraform utiliza como input um conjunto de arquivos contendo a definição da Infraestrutura a ser criada nas duas Clouds. A arquitetura dessa validação segue o modelo apresentado na Figura1, mas não de forma integral. Nosso interesse é apenas verificar e identificar as vantagens e limitações do uso de tal solução à luz dos conceitos de IaC definidos anteriormente, para tal nos concentraremos na criação de uma VM em cada Cloud seguido de instalação de alguns softwares e deploy de um codigo HTTP RESP simples.	
+	Em https://github.com/arielfrozza/multi-cloud está o código que faz o deploy de uma aplicação WEB simples em duas Clouds diferentes; AWS e Openstack. Esse cenário tem o objetivo de representar o uso de um caso particular de Multi-cloud, que é a cloud híblida. A execução desses códigos pode ser feita mediante instalação do Terraform em host com acesso às duas nuvens, deve-se ter também as credenciais necessárias para a criação de instâncias. Os detalhes dos códigos e sua implementação não serão descritos neste artigo, mas os detalhes e passo a passo encontran-se no repositório GitHub abaixo dos diretórios openstack\_tf e aws\_tf para cada uma das duas Nuvens.
 	
-	- O controle das versões de código em Git facilita muito
+	O Terraform utiliza como input um conjunto de arquivos contendo a definição da Infraestrutura a ser criada nas duas Clouds. A arquitetura dessa validação segue o modelo apresentado na Figura1, mas não de forma integral. Nosso interesse é apenas verificar e identificar as vantagens e limitações do uso de tal solução à luz dos conceitos de IaC definidos anteriormente, para tal nos concentraremos na criação de uma instância Ubuntu 16.04 em cada uma das Clouds seguido de instalação de alguns softwares (Python 2.7 e Flask) e deploy de um codigo HTTP RESP (escrito em Flask) simples.	
 	
-	- A sintaxe para a criação de recursos é substancialmente diferente para as duas Clouds, o que dificulta o controle e reuso de código.
-	 
-	----
-		
-	Usaremos open-source software para demonstrar como os padrõe podem ser impleentados fazem este estudo mais util/completo/específico que padrões enéricos como os descrito em http://www.cloudpatterns.org.
+	Durante o desenvolvimento dos códigos, pudemos obter grandes vantagens com o uso do GitHub para controle de versões e mudanças no código. O código pode ser testado com mais frequencia, a cada incremento no código. Também a documentação ficou mas robusta e coerente, pois, a cada novo commit feito, as anotações de comentário eram obrigatórias e sincronas.
 	
-	We need to selec the projects with a large and active community, quantos "commiters" estão ativos, quantos contribuidores são de diferentes organizações ou este é um projeto open-source de uma única empresa (algumas empresas desenvolvem open-source software mas não aceitam contribuições externas - Read Only Opensource). Idealmente, melhor ainda se a solução open-source tiver alguma empresa mantenedora/responsável por oferecer serviços de consultoria e bug-fixes (caso a empresa não tenha todo o expertise in-house). 
+	Pudemos notar também que, apezar da estrutura e quantidades de arquivos de código escritos para as duas Nuven serem iguais, devido ao funcionamento do Terraform, a     sintaxe para a criação de recursos, o método de autenticação são substancialmente diferentes para as duas Clouds, o que acabou causando que todos os arquivos diferissem parcialmente de uma Nuvem para outra, o que dificulta o controle e reuso direto de código.
+	
+	Por outro lado, o reuso ainda pode ser feito mediante poucos ajustes. No caso te termos que replicar essa inplementação em um terceiro provedor de Nuvem (Google GCP ou Azure, por exemplo) teríamos apenas que incluir ou retirar algumas linhas específicas para aquela Nuvem e mudaría-mos os valores e nomes das variáveis. Toda a estrutura, relação e quantidade de arquivos permaneceria igual às outras. 
+	
+	Em nenhuma etapa da escrita ou execução dos códigos tivemos que interagir ou escrever código que interagisse diretamente com as APIs das Nuvens em estudo, isso nos facilitou a escrita e documentação dos códigos.
+	
+	No caso de uso das SDKs (ou outros serviços como Heat e CloudFormation) das Nuvens, todo o código seria diferente e nada poderia ser reaproveitado para um provedor de Nuvem diferente. Usar uma solução agnóstica como Terraform, facilita o estabelecimento de processos padronizados e estruturados de desevolvimento de código e possibilita melhor interação e troca de conhecimento e experiências entre pessoas e times.		
 	
 	\section{Conclusion}
 		
-	Conclusão ...
+	- multi nuvem é uma ótima solução para que empresas obtenham fault-torerance, performance, security and cost efficiency para suas ofertas de serviço na Web.
+	
+	- Há diversas soluções para IaC em Nuvem Pública ou Privadas, mas poucas são agnósticas, completas e robustas o bastante para atender as necessidades de empresas que utilizam multi-nuvem.
+	
+	- Na validação experimental pudemos observar que o versionamento de código com ferramentas como Git são fundamentais para IaC e que o Terraform se mostrou uma solução agnóstica muito boa para trabalharmos em muti-cloud com IaC.
+	
+	- O uso de SDKs ou outras soluções, como Heat ou CloudFormation, específicas para provedores de Nuvem específicos dificulta ou impossibilita o reaproveitamento de código e a replicação de implementações entre provedores de Nuvem diferentes. No caso de uso para multi-nuvem com grande numero de provedores participantes, o uso de SDKs e ferramentas específicas pode gerar muita dificulde de controle para manutenção, testes e implementação dos códigos.
+	
+	- Os principais provedores de nuvem parecem se proteger do mercado em multi-nuvem por não aderirem a padrões de Nuvem API, como as propostas por OASIS, a qual o OpenStak é uma das poucas aderentes.
+	
+	- A concorrência em alguns setores de serviçõs Web e a crescente exigência do usuário final de serviços de alta qualidade (rápidos, disponíveis e baratos) pode impulsionar alguns setores para o uso de multi-nuvem.	
+	
+	%Current solutions and their limitations.
+	%Problem statement.
+	%Solution methodology.
+	%Expected contributions.
+	%Assumptions and objectives for supporting open-source multi-cloud deployment.
+	%Key challenges while deploying enterprise computing in Multi-Cloud Environment.
+	%Open-source Multi-Cloud deployment solution framework.
+	%Solution to major multi-cloud challenges.
 	
 	% \textbf{Texto negrito}. Seleciona e CTRL + b
 	% \textit{Text itálico}. Seleciona e ctrl + i
