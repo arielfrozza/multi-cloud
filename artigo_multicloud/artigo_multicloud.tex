@@ -149,9 +149,14 @@
 	
 	Durante o desenvolvimento dos códigos, pudemos obter grandes vantagens com o uso do GitHub para controle de versões e mudanças no código, que pode ser testado com mais frequência, a cada incremento no código. Também a documentação ficou mas robusta e coerente, pois, a cada novo \textit{commit} feito, as anotações de comentário eram obrigatórias e síncronas.
 	
-	Pudemos notar também que, apezar da estrutura e quantidades de arquivos de código escritos para as duas Nuvens serem iguais, devido ao funcionamento do Terraform, a sintaxe para a criação de recursos, o método de autenticação são substancialmente diferentes para as duas Clouds, o que acabou causando que todos os arquivos diferissem parcialmente de uma Nuvem para outra, conforme Figura3, o que dificulta o controle e reuso direto de código.
-	
-	FIGURA 3
+	Pudemos notar também que, apezar da estrutura e quantidades de arquivos de código escritos para as duas Nuvens serem iguais, devido ao funcionamento do Terraform, a sintaxe para a criação de recursos, o método de autenticação são substancialmente diferentes para as duas Clouds, o que acabou causando que todos os arquivos diferissem parcialmente de uma Nuvem para outra, conforme Figura~\ref{fig:figure3}, o que dificulta o controle e reuso direto de código.
+		
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.9\linewidth]{figuras/Figure3.png}
+		\caption{legenda longa figura3}
+		\label{fig:figure3}
+	\end{figure}
 	
 	Por outro lado, o reuso ainda pode ser feito mediante poucos ajustes. No caso te termos que replicar essa inplementação em um terceiro provedor de Nuvem (Google GCP ou Azure, por exemplo) teríamos apenas que incluir ou retirar algumas linhas específicas para aquela Nuvem e mudaría-mos os valores e nomes das variáveis. Toda a estrutura, relação e quantidade de arquivos permaneceria igual às outras. 
 	
@@ -159,7 +164,7 @@
 	
 	No caso de uso das SDKs (ou outros serviços como Heat e CloudFormation) das Nuvens, todo o código seria diferente e nada poderia ser reaproveitado para um provedor de Nuvem diferente. 		
 	
-	\section{Conclusion}
+	\section{Conclusão}
 	
 	- Usar uma solução agnóstica como Terraform, facilita o estabelecimento de processos padronizados e estruturados de desevolvimento de código e possibilita melhor interação e troca de conhecimento e experiências entre pessoas e times.
 	
