@@ -9,18 +9,18 @@ resource "aws_instance" "vm01" {
 
   provisioner "file" {
     source = "simple_app.py"
-    destination = "/opt/simple_app.py"
-  }
-  connection {
-    user = " ${var.INSTANCE_USERNAME}"
-    private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    destination = "/home/ubuntu/app.py"
   }
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get -y install python python-pip python-setuptools python-dev build-essential",
       "sudo pip install flask",
-      "FLASK_APP=/opt/simple_app.py nohup flask run --host=0.0.0.0 &"
+      "nohup flask run --host=0.0.0.0 &"
     ]
+  }
+  connection {
+    user = "${var.INSTANCE_USERNAME}"
+    private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
   }
 }
