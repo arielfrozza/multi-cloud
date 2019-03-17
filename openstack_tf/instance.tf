@@ -5,17 +5,6 @@ Create a instance in openstack, with existing image, flavor, keypair, security-g
 Use terraform provider and resource block.
 */
 
-# Provider details
-
-provider "openstack" {
-  user_name   = "admin"
-  tenant_name = "logistics"
-  password    = "admin"
-  auth_url    = "http://192.168.56.56:5000/v3"
-  region      = "RegionOne"
-  domain_name = "default"
-}
-
 # Instance creation
 
 resource "openstack_compute_instance_v2" "vm01" {
@@ -27,6 +16,15 @@ resource "openstack_compute_instance_v2" "vm01" {
   network {
     uuid = "278a6eb3-a05a-49f4-826f-b978f3833c29"
   }
+}
+
+resource "openstack_networking_floatingip_v2" "floatip_1" {
+  pool = "provider-network-cli"
+}
+
+resource "openstack_compute_floatingip_associate_v2" "floatip_1" {
+  floating_ip = "${openstack_networking_floatingip_v2.floatip_1.address}"
+  instance_id = "${openstack_compute_instance_v2.vm01.id}"
 }
 
 output "vm-name" {
