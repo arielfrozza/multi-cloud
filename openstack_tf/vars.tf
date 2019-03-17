@@ -13,7 +13,7 @@ variable "MYIMAGE" {
 /*
   default = "fdcecf4e-443a-46e0-84af-af606bb5b08a"
 */
-  default = "d2840788-c1ed-43cc-9dff-f86047b80e5e"
+  default = "54c27111-22f3-4187-85a7-9b50e27986da"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
