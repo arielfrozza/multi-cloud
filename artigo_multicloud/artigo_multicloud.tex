@@ -8,11 +8,11 @@
 
 \usepackage{indentfirst} % SBC nao usa indentfirst, mas acho melhor com identacao
 
-\title{Multi-nuvem}
+\title{Estudo de Caso de Multi-nuvem}
 
 \author{Alexandre Canalle\inst{1}, Ariel Frozza\inst{1}}
 
-\address{Instituto de Informática -- Universidade Católica do Paraná (PUC-PR)\\
+\address{Instituto de Informática -- Pontifícia Universidade Católica do Paraná (PUC-PR)\\
 	Caixa Postal 15.064 -- 91.501-970 -- Curitiba -- PR -- Brazil
 	\email{arielfrozza@gmail.com, roxsnd@gmail.com}
 }
@@ -37,9 +37,9 @@
 	\section{Introdução}
 	    Atualmente, o uso simultâneo de serviços e recursos de múltiplos provedores de Nuvem é justificado pela necessidade de seus consumidores, expressas em requerimentos tais como qualidade de serviço e custo. As organizações que estão migrando para a Nuvem, seja para estender ou substituir sua infraestrutura \textit{on-premises}, buscam soluções confiáveis, seguras e, se possível, sem aprisionamento à fornecedores ou soluções fechadas (\textit{vendor lock in}).
 	    
-	    Este artigo pretende descrever alguns desafios do uso simultâneo de mais de um provedor de Nuvem e levantar alguns dor principais pontos de atenção na utilização das atuais soluções que buscam atender as necessidades dos usuários de múltiplas Nuvens. Primeiramente, a definição e a necessidade de um ambiente em Multi-nuvem é discutida, em seguida, um modelo padrão de arquitetura para Multi-nuvem é apresentado. A partir desta arquitetura de referência, algumas soluções (software) que tornam possíveis a Infraestrutura como Código em Multi-nuvem são apresentados e discutidos. Por último, ilustraremos, a partir de um exemplo prático (disponível em https://github.com/arielfrozza/multi-cloud) os processos, requisitos e desafios na implementação de IaaS em Multi-nuvem usando ferramentas e princípios típicos de Infraestrutura como Código.
+	    Este estudo de caso apresenta princípios, conceitos, desafios e ferramentas envolvidas no uso simultâneo de recursos de múltiplos provedores de Nuvem (Públicas ou Privadas). Também serão levantados alguns dos principais pontos de atenção na utilização das atuais soluções que se propõem a gerenciar recursos de IaaS ou PaaS de múltiplas Nuvens, pois, há poucas soluções agnósticas (Open source ou proprietárias) disponíveis no mercado, já que, as APIs das principais Nuvens diferem muito entre si, dificultando o aproveitamento de código, por exemplo. O senário ideal seria poder utilizar uma solução (software) que possa gerenciar múltiplas Nuvens de forma centralizada, onde uma única instrução de código possa criar recursos de IaaS ou Paas em diferentes provedores.
 	    
-	    Este artigo não apresenta abordagem inovadora, entretanto, ele intenta apontar algumas lacunas e dificuldades a serem sanadas por desenvolvedores e usuários de ambientes em Multi-nuvem. Em especial, discutiremos \textit{frameworks} e padrões de provisionamento em Nuvem (pública, privada ou híbrida) que ofereçam APIs que disponibilizam funcionalidades compatíveis ou equivalentes com os softwares,  serviços e APIs ofertados pelos principais provedores de Nuvem, de modo que o provisionamento, orquestração e uso de vários provedores de Nuvens diferentes seja facilitado.
+	    Conceitos relevantes para o tema, tais como Infraestrutura como Código, a definição e os benefícios do uso de um ambiente em Multi-nuvem são discutidos primeiramente. Em seguida, um modelo padrão de arquitetura para Multi-nuvem é apresentado. A partir dessa arquitetura de referência, algumas soluções (software) que tornam possíveis a Infraestrutura como Código em Multi-nuvem são apresentados e discutidos. Por fim, será discutido, a partir de uma experimentação disponível em https://github.com/arielfrozza/multi-cloud os processos, requisitos e desafios na implementação de IaaS em Multi-nuvem usando uma ferramenta Opensource, o Terraform, que será estudado à luz dos princípios da Infraestrutura como Código, será validado em que condições os códigos podem ser reaproveitados, por exemplo, e também, se há vantagens no uso desta solução, por ser agnóstica, frente às soluções fechadas de cada provedor de Nuvem.
 		
 	\section{Definição e Necessidade de Multi-nuvens}
 	
@@ -96,7 +96,7 @@
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.9\linewidth]{figuras/Figure1.png}
-		\caption{legenda longa figura1}
+		\caption{Diagrama de relacionamentos de processos em Multi-nuvem.}
 		\label{fig:figure1}
 	\end{figure}
 	
@@ -117,7 +117,7 @@
     \begin{figure}[H]
     	\centering
     	\includegraphics[width=0.7\linewidth]{figuras/Figure2.png}
-    	\caption{legenda longa figura2}
+    	\caption{Diagrama do processo de Pipeline de Imagens.}
     	\label{fig:figure2}
     \end{figure}
     
@@ -157,8 +157,8 @@
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=0.45\linewidth]{figuras/Figure3a.png}
-		\caption{legenda longa figura3a}
+		\includegraphics[width=0.42\linewidth]{figuras/Figure3a.png}
+		\caption{Comparativo da estrutura dos diretórios e listagem de arquivos das duas Nuvens.}
 		\label{fig:figure3a}
 	\end{figure}
 	
@@ -168,45 +168,39 @@
 		
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.82\linewidth]{figuras/Figure3b.png}
-		\caption{legenda longa figura3b}
+		\includegraphics[width=0.8\linewidth]{figuras/Figure3b.png}
+		\caption{Comparativo de código dos arquivos provider.tf para as duas Nuvens.}
 		\label{fig:figure3b}
 	\end{figure}
 	
 	Outro exemplo dessa diferença de sintaxe também pode ser observada na Figura~\ref{fig:figure3} em que apenas um trecho do código que provisiona as VMs é exibido, mas que mostra claramente que as instruções do Terraform para as duas Nuvens em estudo, diferem muito entre si.
+	
+	Essas diferenças entre as sintaxes do Terraform para cada provedor de Nuvem, acabou causando que todos os arquivos diferissem, no conteúdo, parcialmente de uma Nuvem para outra, conforme Figura~\ref{fig:figure3}. Este fato potencialmente dificulta o controle das mudanças de código e e também o reuso de trechos, quando, por exemplo deseja-se replicar a infraestrutura em questão, para um terceiro provedor.
 		
 	\begin{figure}[ht]
 		\centering
 		\includegraphics[width=0.97\linewidth]{figuras/Figure3.png}
-		\caption{legenda longa figura3}
+		\caption{Comparativo de trecho de código dos arquivos instance.tf para as duas Nuvens.}
 		\label{fig:figure3}
 	\end{figure}
 
-    o que acabou causando que todos os arquivos diferissem parcialmente de uma Nuvem para outra, conforme Figura~\ref{fig:figure3}, o que dificulta o controle e reuso direto de código.
+	Durante o desenvolvimento dos códigos em Terraform, foi possível obter grandes vantagens com o uso do GitHub para controle de versões no código, pois, cada mudança no código ou incremento, pode ser testado com mais frequência. Também a documentação ficou mas robusta e coerente, pois, a cada novo \textit{commit} feito no GitHub, as anotações de comentário eram obrigatórias e síncronas. O reúso de código também é facilitado quando um versionador de arquivos é usado. No caso do GitHub, um \textit{fork} poderia ser criado para o gerenciamento de infraestrutura ou configuração em outra Nuvem ou para a replicação em um ciclo de vida de aplicação; de Desenvolvimento para Homologação, que por fim pode ser promovido para Produção.
 	
-	Durante o desenvolvimento dos códigos, pudemos obter grandes vantagens com o uso do GitHub para controle de versões e mudanças no código, que pode ser testado com mais frequência, a cada incremento no código. Também a documentação ficou mas robusta e coerente, pois, a cada novo \textit{commit} feito, as anotações de comentário eram obrigatórias e síncronas.
+	No caso de haver interesse na replicação de uma implementação para um terceiro, ou vários outros, provedor(es) de Nuvem (por exemplo Google GCP, Azure, IBM BlueMix, Mirantis, etc.) teríam apenas que ser incluiídas ou retiradas algumas linhas específicas para aquela Nuvem e seriam alteradas também os valores e nomes das variáveis. Toda a estrutura, relação e quantidade de arquivos permaneceria igual às outras. Portanto, o reuso de código, mesmo que demandando um certo nível de esforço, pode ainda ser feito. 
 	
-	Por outro lado, o reuso ainda pode ser feito mediante poucos ajustes. No caso te termos que replicar essa inplementação em um terceiro provedor de Nuvem (Google GCP ou Azure, por exemplo) teríamos apenas que incluir ou retirar algumas linhas específicas para aquela Nuvem e mudaría-mos os valores e nomes das variáveis. Toda a estrutura, relação e quantidade de arquivos permaneceria igual às outras. 
+	O Terraform também mostrou-se muito eficaz em abstrair para o usuário, as APIs das duas Nuvens estudadas. Em nenhuma etapa da escrita ou execução dos códigos foi necessário interagir ou escrever código que interagisse diretamente com as APIs das Nuvens em estudo. Isso facilita a escrita e documentação dos códigos.
 	
-	Em nenhuma etapa da escrita ou execução dos códigos tivemos que interagir ou escrever código que interagisse diretamente com as APIs das Nuvens em estudo, isso nos facilitou a escrita e documentação dos códigos.
-	
-	No caso de uso das SDKs (ou outros serviços como Heat e CloudFormation) das Nuvens, todo o código seria diferente e nada poderia ser reaproveitado para um provedor de Nuvem diferente. 		
+	No caso de uso das SDKs (ou outros serviços como Heat e CloudFormation) das Nuvens, todo o código para interagir com as APIs das Nuvens seriam totalmente diferentes entre si, e nada poderia ser reaproveitado nos casos de extensão de serviços para um provedor de Nuvem adicional (e diferente das demais). 		
 	
 	\section{Conclusão}
 	
-	- Usar uma solução agnóstica como Terraform, facilita o estabelecimento de processos padronizados e estruturados de desevolvimento de código e possibilita melhor interação e troca de conhecimento e experiências entre pessoas e times.
+	Multi-nuvem está sendo cada vez mais utilizada em ambientes corporativos, especialmente no formato de Nuvem híbrida, sendo uma ótima solução para que elas possam ofertar serviços WEB tolerantes à falhas, com ótima performance e com custos eficientes, mas, principalmente, a concorrência em alguns setores de serviços WEB e a crescente exigência do usuário por serviços rápidos, disponíveis e baratos, pode impulsionar ainda mais o uso de Multi-nuvem. Porém, ainda há pouca disponibilidade de soluções agnósticas, completas e robustas o bastante no mercado capazes de gerenciar recursos em diversos provedores de Nuvem Pública ou Privadas simultaneamente, de forma a atender as necessidades de gerenciamento de infraestrutura em Nuvem de tais empresas.
 	
-	- multi nuvem é uma ótima solução para que empresas obtenham fault-torerance, performance, security and cost efficiency para suas ofertas de serviço na Web.
+	Os principais provedores de Nuvem parecem se proteger do mercado Multi-nuvem ao criarem suas APIs de forma fechada. A não adesão a padrões de Nuvem API, como as propostas por OASIS \cite{CAMP:2019} (à qual o OpenStak é uma das poucas aderentes) torna muito difícil o desenvolvimento de soluções agnósticas que se propõem a resolver o problema do gerenciamento de recursos e infraestrutura em Multi-nuvem.
+		
+	Durante a validação experimental deste estudo, identificou-se o Terraform como uma das mais completas e robustas soluções para o caso, por ser uma solução agnóstica, desenvolvida para possibilitar o uso sob os princípios da Infraestrutura como Código, onde o versionamento (em GitHub neste estudo) e o reaproveitamento de código são valores importatntes, o Terraform facilita o estabelecimento de processos padronizados e estruturados de desevolvimento de código, por conseguir abstrair para o usuário, as APIs dos diferentes porvedores de Nuvem. Idealmente, o usuário deveria poder trabalhar e manter apenas um código que pudesse provisionar em diversas Nuvens, entretanto, foi possível identificar que os códigos do Terraform apresentam substanciais diferenças de um provedor para outro, o que dificulta o reaproveitamento de código. 
 	
-	- Há diversas soluções para IaC em Nuvem Pública ou Privadas, mas poucas são agnósticas, completas e robustas o bastante para atender as necessidades de empresas que utilizam multi-nuvem.
-	
-	- Na validação experimental pudemos observar que o versionamento de código com ferramentas como Git são fundamentais para IaC e que o Terraform se mostrou uma solução agnóstica muito boa para trabalharmos em muti-cloud com IaC.
-	
-	- O uso de SDKs ou outras soluções, como Heat ou CloudFormation, específicas para provedores de Nuvem específicos dificulta ou impossibilita o reaproveitamento de código e a replicação de implementações entre provedores de Nuvem diferentes. No caso de uso para multi-nuvem com grande numero de provedores participantes, o uso de SDKs e ferramentas específicas pode gerar muita dificulde de controle para manutenção, testes e implementação dos códigos.
-	
-	- Os principais provedores de nuvem parecem se proteger do mercado em multi-nuvem por não aderirem a padrões de Nuvem API, como as propostas por OASIS, a qual o OpenStak é uma das poucas aderentes.
-	
-	- A concorrência em alguns setores de serviçõs Web e a crescente exigência do usuário final de serviços de alta qualidade (rápidos, disponíveis e baratos) pode impulsionar alguns setores para o uso de multi-nuvem.	
+	Apesar das limitações com relação ao reaproveitamento de código, o Terraform pode ser mais eficiente e eficaz que o uso de SDKs ou outras soluções, como Heat ou CloudFormation, por serem muito específicas para determinados provedores de Nuvem, impossibilitando totalmente o reaproveitamento de código, bem como a replicação ou migração de implementações entre provedores de Nuvem diferentes. Em particular, no caso de uso para Multi-nuvem com grande número de provedores participantes, o uso de SDKs ou ferramentas específicas pode gerar muita dificuldade no desenvolvimento, manutenção, testes e implementação dos códigos.
 	
 	%Current solutions and their limitations.
 	%Problem statement.
@@ -217,40 +211,10 @@
 	%Open-source Multi-Cloud deployment solution framework.
 	%Solution to major multi-cloud challenges.
 	
-	% \textbf{Texto negrito}. Seleciona e CTRL + b
-	% \textit{Text itálico}. Seleciona e ctrl + i
-	% \textbf{\textit{Text negrito e itálico}}
-	% \underline{Text undeline} 
-	
-	% \begin{flushleft}
-	%	Texto à esquerda
-	% \end{flushleft}
-	
-	% \begin{center}
-	%	Texto centralizado.
-	% \end{center}
-	
-	% \begin{flushright}
-	%	Texto à direita.
-	% \end{flushright}
-	
-	% {\tiny Texto pequeno.}
-	% {\LARGE Texto Grande.}
-	% Texto Normal.
-	
-	% \part[test]{title}
-	
-	% \colorbox{gray}{\textcolor{green}{fundo em cinza com texto verde}}
-	% \pagecolor{blue}
-	
 	\nocite{Bond:2015}
 	
 	\newpage
-	%\bibliographystyle{alpha}
-	%\bibliographystyle{plain}
-	%\bibliographystyle{unsrt}
-	%\bibliographystyle{abbrv}
-	%\bibliographystyle{apalike}
+
 	\bibliographystyle{sbc}	
 	\bibliography{artigo_multicloud.bib}
 	
