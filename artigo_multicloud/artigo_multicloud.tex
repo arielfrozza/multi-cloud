@@ -6,15 +6,15 @@
 \usepackage[brazil]{babel}
 \usepackage{float}
 
-\usepackage{indentfirst} % SBC nao usa indentfirst, mas acho melhor com identacao
+%\usepackage{indentfirst} % SBC nao usa indentfirst, mas acho melhor com identacao
 
 \title{Estudo de Caso de Solução Agnóstica para Gerenciamento de Recursos em Multi-nuvem}
 
 \author{Alexandre Canalle\inst{1}, Ariel Frozza\inst{1}}
 
-\address{Departamento de Informática -- Pontifícia Universidade Católica do Paraná (PUC-PR)\\
-	Caixa Postal 15.064 -- 91.501-970 -- Curitiba -- PR -- Brazil
-	\email{arielfrozza@gmail.com, roxsnd@gmail.com}
+\address{Pós-Graduação em Computação em Nuvem \\ Pontifícia Universidade Católica do Paraná
+	 \\ Curitiba -- PR -- Brazil
+	\email{ariel.frozza@pucpr.edu.br, canalle.alexandre@pucpr.edu.br}
 }
 
 \begin{document}
@@ -23,15 +23,11 @@
 \maketitle
 	
 \begin{abstract}
-	This meta-paper describes the style to be used in articles and short papers
-	for SBC conferences. For papers in English, you should add just an abstract
-	while for the papers in Portuguese, we also ask for an abstract in
-	Portuguese (``resumo''). In both cases, abstracts should not have more than
-	10 lines and must be in the first page of the paper.
+	Multi-cloud is increasingly being used in corporate environments to meet the needs of users, who require fast, available and affordable services. However, there are still few solutions that can manage resources across different cloud providers simultaneously. This article explores the concepts of Multi-Cloud and Infrastructure as Code. The difficulties in interoperability among multiple cloud providers are described and possible solutions to the difficulties encountered are discussed. Finally, a case study of the implementation of a WEB service in two distinct Clouds (AWS and Openstack) will be presented, in order to verify the effectiveness of an agnostic solution for Multi-cloud management. The Terraform tool was identified as the one that best serves this purpose.
 \end{abstract}
 
 \begin{resumo} 
-	Este artigo explora os conceitos de Multi-nuvem e Infraestrutura como Código.Também são descritas as dificuldades na interoperabilidade entre múltiplos provedores de Nuvem e serão discutidas possíveis soluções para as dificuldades descritas. Por fim, será apresentado um caso de uso da ferramenta Terraform para implementação de um serviço WEB em duas Nuvens distintas (AWS e Openstack), com intuito de verificar a efetividade de uma solução agnóstica para gerenciamento de Multi-nuvem.
+	Multi-nuvem está sendo cada vez mais utilizada em ambientes corporativos para atender as necessidades dos usuários, que exigem serviços rápidos, disponíveis e baratos. Porém, há ainda poucas soluções capazes de gerenciar recursos em diferentes provedores de Nuvem de forma simultânea. Este artigo explora os conceitos de Multi-nuvem e Infraestrutura como Código. São descritas as dificuldades na interoperabilidade entre múltiplos provedores de Nuvem e discutidas possíveis soluções para as dificuldades elencadas. Por fim, será apresentado um estudo de caso de implementação de um serviço WEB em duas Nuvens distintas (AWS e Openstack), com intuito de verificar a efetividade de uma solução agnóstica para gerenciamento de Multi-nuvem. Foi identificado a ferramenta Terraform como a que melhor atende a este propósito.
 \end{resumo}
 
 	\section{Introdução}
@@ -155,7 +151,7 @@
 	
 	A Figura~\ref{fig:figure3a} lista os arquivos utilizados para este estudo e que estão disponíveis no GitHub. Os arquivos de extensão ".tf" e ".tfvars" contém o código Terraform que interage com as Nuvens para a execução das rotinas. Consta ainda, nestes diretórios, a aplicação de teste, em Flask (simple\_app.py) e o par de chaves (mykey e mykey.pub) para a conexão remota via SSH com as instâncias criadas nas duas Nuvens.  
 	
-	\begin{figure}[ht]
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.42\linewidth]{figuras/Figure3a.png}
 		\caption{Comparativo da estrutura dos diretórios e listagem de arquivos das duas Nuvens.}
@@ -163,8 +159,6 @@
 	\end{figure}
 	
 	É importante, do ponto de vista da IaC, que os dois diretórios ilustrados na Figura~\ref{fig:figure3a} tenham a mesma estrutura e relação de arquivos, pois facilita a criação e atualizações de documentação e procedimentos operacionais. Além disso, possibilita o reaproveitamento de estruturas inteiras ou de blocos de código, a manutenção e o controle de versões e mudanças fica facilitado com a segmentação em diferentes arquivos com funções melhor definidas. 
-	
-	Entretanto, ao fazer a comparação do conteúdo de cada arquivo do Terraform (os ".ft"), é possível observar facilmente que os códigos diferem substancialmente, conforme ilustrado nas Figura~\ref{fig:figure3b} e Figura~\ref{fig:figure3}. Apesar da estrutura e quantidades de arquivos de código escritos para as duas Nuvens serem iguais, devido ao funcionamento do Terraform, a sintaxe para a criação de recursos pode mudar bastante dependendo do provedor de Nuvem em uso. Por exemplo, os métodos de autenticação são essencialmente diferentes para as duas Nuvens utilizadas neste estudo. O Openstack requer um usuário com senha e também a URL do Keystone, a região e o domínio utilizado, já a AWS requer apenas a chave de acesso e a \textit{secret key} para fazer a autenticação e autorização, conforme ilustrado na Figura~\ref{fig:figure3b}. 
 		
 	\begin{figure}[H]
 		\centering
@@ -172,6 +166,8 @@
 		\caption{Comparativo de código dos arquivos provider.tf para as duas Nuvens.}
 		\label{fig:figure3b}
 	\end{figure}
+	
+	Entretanto, ao fazer a comparação do conteúdo de cada arquivo do Terraform (os ".ft"), é possível observar facilmente que os códigos diferem substancialmente, conforme ilustrado nas Figura~\ref{fig:figure3b} e Figura~\ref{fig:figure3}. Apesar da estrutura e quantidades de arquivos de código escritos para as duas Nuvens serem iguais, devido ao funcionamento do Terraform, a sintaxe para a criação de recursos pode mudar bastante dependendo do provedor de Nuvem em uso. Por exemplo, os métodos de autenticação são essencialmente diferentes para as duas Nuvens utilizadas neste estudo. O Openstack requer um usuário com senha e também a URL do Keystone, a região e o domínio utilizado, já a AWS requer apenas a chave de acesso e a \textit{secret key} para fazer a autenticação e autorização, conforme ilustrado na Figura~\ref{fig:figure3b}. 
 	
 	Outro exemplo dessa diferença de sintaxe também pode ser observada na Figura~\ref{fig:figure3} em que apenas um trecho do código que provisiona as VMs é exibido, mas que mostra claramente que as instruções do Terraform para as duas Nuvens em estudo, diferem muito entre si.
 	
